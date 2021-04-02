@@ -3,7 +3,7 @@ import { AutoColumn } from '../../components/Column'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import { JSBI, TokenAmount, ETHER } from '@uniswap/sdk'
+import { JSBI, TokenAmount, TRX } from '@tofudefi/tofuswap-sdk'
 import { RouteComponentProps } from 'react-router-dom'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
 import { useCurrency } from '../../hooks/Tokens'
@@ -114,21 +114,21 @@ export default function Manage({
   // fade cards if nothing staked or nothing earned yet
   const disableTop = !stakingInfo?.stakedAmount || stakingInfo.stakedAmount.equalTo(JSBI.BigInt(0))
 
-  const token = currencyA === ETHER ? tokenB : tokenA
-  const WETH = currencyA === ETHER ? tokenA : tokenB
+  const token = currencyA === TRX ? tokenB : tokenA
+  const WTRX = currencyA === TRX ? tokenA : tokenB
   const backgroundColor = useColor(token)
 
-  // get WETH value of staked LP tokens
+  // get WTRX value of staked LP tokens
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo?.stakedAmount?.token)
   let valueOfTotalStakedAmountInWETH: TokenAmount | undefined
-  if (totalSupplyOfStakingToken && stakingTokenPair && stakingInfo && WETH) {
+  if (totalSupplyOfStakingToken && stakingTokenPair && stakingInfo && WTRX) {
     // take the total amount of LP tokens staked, multiply by ETH value of all LP tokens, divide by all LP tokens
     valueOfTotalStakedAmountInWETH = new TokenAmount(
-      WETH,
+      WTRX,
       JSBI.divide(
         JSBI.multiply(
-          JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WETH).raw),
-          JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WETH they entitle owner to
+          JSBI.multiply(stakingInfo.totalStakedAmount.raw, stakingTokenPair.reserveOf(WTRX).raw),
+          JSBI.BigInt(2) // this is b/c the value of LP shares are ~double the value of the WTRX they entitle owner to
         ),
         totalSupplyOfStakingToken.raw
       )
@@ -138,8 +138,8 @@ export default function Manage({
   const countUpAmount = stakingInfo?.earnedAmount?.toFixed(6) ?? '0'
   const countUpAmountPrevious = usePrevious(countUpAmount) ?? '0'
 
-  // get the USD value of staked WETH
-  const USDPrice = useUSDCPrice(WETH)
+  // get the USD value of staked WTRX
+  const USDPrice = useUSDCPrice(WTRX)
   const valueOfTotalStakedAmountInUSDC =
     valueOfTotalStakedAmountInWETH && USDPrice?.quote(valueOfTotalStakedAmountInWETH)
 

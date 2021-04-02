@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
-import { TokenAmount, Token, ChainId, Percent, JSBI } from '@uniswap/sdk'
+import { TokenAmount, Token, ChainId, Percent, JSBI } from '@tofudefi/tofuswap-sdk'
 
 import {
   getEtherscanLink,
@@ -29,7 +29,7 @@ describe('utils', () => {
       expect(getEtherscanLink(3, 'abc', 'address')).toEqual('https://ropsten.etherscan.io/address/abc')
     })
     it('enum', () => {
-      expect(getEtherscanLink(ChainId.RINKEBY, 'abc', 'address')).toEqual('https://rinkeby.etherscan.io/address/abc')
+      expect(getEtherscanLink(ChainId.NILE, 'abc', 'address')).toEqual('https://nile.etherscan.io/address/abc')
     })
   })
 

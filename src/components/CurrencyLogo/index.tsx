@@ -1,4 +1,4 @@
-import { Currency, ETHER, Token } from '@uniswap/sdk'
+import { Currency, TRX, Token } from '@tofudefi/tofuswap-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
@@ -36,7 +36,7 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency === TRX) return []
 
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
@@ -48,7 +48,7 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
+  if (currency === TRX) {
     return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
   }
 

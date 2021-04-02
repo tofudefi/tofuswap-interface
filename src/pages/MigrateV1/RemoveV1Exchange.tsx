@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/abstract-provider'
-import { JSBI, Token, TokenAmount, WETH, Fraction, Percent, CurrencyAmount } from '@uniswap/sdk'
+import { JSBI, Token, TokenAmount, WTRX, Fraction, Percent, CurrencyAmount } from '@tofudefi/tofuswap-sdk'
 import React, { useCallback, useMemo, useState } from 'react'
 import ReactGA from 'react-ga'
 import { Redirect, RouteComponentProps } from 'react-router'
@@ -50,8 +50,8 @@ function V1PairRemoval({
   const shareFraction: Fraction = totalSupply ? new Percent(liquidityTokenAmount.raw, totalSupply.raw) : ZERO_FRACTION
 
   const ethWorth: CurrencyAmount = exchangeETHBalance
-    ? CurrencyAmount.ether(exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient)
-    : CurrencyAmount.ether(ZERO)
+    ? CurrencyAmount.trx(exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient)
+    : CurrencyAmount.trx(ZERO)
 
   const tokenWorth: TokenAmount = exchangeTokenBalance
     ? new TokenAmount(token, shareFraction.multiply(exchangeTokenBalance.raw).quotient)
@@ -79,7 +79,7 @@ function V1PairRemoval({
         })
 
         addTransaction(response, {
-          summary: `Remove ${chainId && token.equals(WETH[chainId]) ? 'WETH' : token.symbol}/ETH V1 liquidity`
+          summary: `Remove ${chainId && token.equals(WTRX[chainId]) ? 'WTRX' : token.symbol}/TRX V1 liquidity`
         })
         setPendingRemovalHash(response.hash)
       })
@@ -119,7 +119,7 @@ function V1PairRemoval({
       </LightCard>
       <TYPE.darkGray style={{ textAlign: 'center' }}>
         {`Your Uniswap V1 ${
-          chainId && token.equals(WETH[chainId]) ? 'WETH' : token.symbol
+          chainId && token.equals(WTRX[chainId]) ? 'WTRX' : token.symbol
         }/ETH liquidity will be redeemed for underlying assets.`}
       </TYPE.darkGray>
     </AutoColumn>

@@ -1,5 +1,5 @@
 import { UNI } from './../../constants/index'
-import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from '@uniswap/sdk'
+import { Currency, CurrencyAmount, TRX, JSBI, Token, TokenAmount } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
 import { useAllTokens } from '../../hooks/Tokens'
@@ -39,7 +39,7 @@ export function useETHBalances(
     () =>
       addresses.reduce<{ [address: string]: CurrencyAmount }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value) memo[address] = CurrencyAmount.ether(JSBI.BigInt(value.toString()))
+        if (value) memo[address] = CurrencyAmount.trx(JSBI.BigInt(value.toString()))
         return memo
       }, {}),
     [addresses, results]
@@ -106,7 +106,7 @@ export function useCurrencyBalances(
   ])
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === ETHER) ?? false, [currencies])
+  const containsETH: boolean = useMemo(() => currencies?.some(currency => currency === TRX) ?? false, [currencies])
   const ethBalance = useETHBalances(containsETH ? [account] : [])
 
   return useMemo(
@@ -114,7 +114,7 @@ export function useCurrencyBalances(
       currencies?.map(currency => {
         if (!account || !currency) return undefined
         if (currency instanceof Token) return tokenBalances[currency.address]
-        if (currency === ETHER) return ethBalance[account]
+        if (currency === TRX) return ethBalance[account]
         return undefined
       }) ?? [],
     [account, currencies, ethBalance, tokenBalances]

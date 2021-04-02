@@ -1,7 +1,7 @@
-import { Currency, ETHER, Token } from '@uniswap/sdk'
+import { Currency, TRX, Token } from '@tofudefi/tofuswap-sdk'
 
 export function currencyId(currency: Currency): string {
-  if (currency === ETHER) return 'ETH'
+  if (currency === TRX) return 'TRX'
   if (currency instanceof Token) return currency.address
   throw new Error('invalid currency')
 }
