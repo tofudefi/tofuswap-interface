@@ -28,21 +28,21 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
+  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}tronscan.io`
 
   switch (type) {
     case 'transaction': {
-      return `${prefix}/tx/${data}`
+      return `${prefix}/#/transaction/${data}`
     }
     case 'token': {
-      return `${prefix}/token/${data}`
+      return `${prefix}/#/token20/${data}`
     }
     case 'block': {
-      return `${prefix}/block/${data}`
+      return `${prefix}/#/block/${data}`
     }
     case 'address':
     default: {
-      return `${prefix}/address/${data}`
+      return `${prefix}/#/address/${data}`
     }
   }
 }
