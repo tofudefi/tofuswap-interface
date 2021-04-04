@@ -2,9 +2,9 @@ import { ChainId } from '@tofudefi/tofuswap-sdk'
 import MULTICALL_ABI from './abi.json'
 
 const MULTICALL_NETWORKS: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '0xeefBa1e63905eF1D7ACbA5a8513c70307C1cE441',
-  [ChainId.SHASTA]: '0x53C43764255c17BD724F74c4eF150724AC50a3ed',
-  [ChainId.NILE]: '0x77dCa2C955b15e9dE4dbBCf1246B4B85b651e50e'
+  [ChainId.MAINNET]: '0xD3573a8728A49512A1485D63180Ed5b095e11D5C',
+  [ChainId.NILE]: '0x04A6730FC23a5f2C3d94F7C7aCb4F92Eab8282c2',
+  [ChainId.SHASTA]: '0xtodomulticallshasta'
 }
 
 export { MULTICALL_ABI, MULTICALL_NETWORKS }
