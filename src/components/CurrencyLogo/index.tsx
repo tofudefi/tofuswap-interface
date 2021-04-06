@@ -2,7 +2,9 @@ import { Currency, TRX, Token } from '@tofudefi/tofuswap-sdk'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
-import EthereumLogo from '../../assets/images/ethereum-logo.png'
+// TRON
+// import EthereumLogo from '../../assets/images/ethereum-logo.png'
+import TronLogo from '../../assets/images/tron-logo.svg'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
@@ -49,7 +51,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency === TRX) {
-    return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
+    return <StyledEthereumLogo src={TronLogo} size={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
