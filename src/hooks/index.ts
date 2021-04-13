@@ -24,7 +24,7 @@ export function useEagerConnect() {
           setTried(true)
         })
       } else {
-        if (isMobile && window.ethereum) {
+        if (isMobile && window.tronWeb) {
           activate(injected, undefined, true).catch(() => {
             setTried(true)
           })

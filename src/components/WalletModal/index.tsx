@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
-import MetamaskIcon from '../../assets/images/metamask.png'
+//import MetamaskIcon from '../../assets/images/metamask.png'
+import TronLinkIcon from '../../assets/images/tronlink.svg'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
@@ -13,7 +14,7 @@ import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
-import { ExternalLink } from '../../theme'
+//import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
 
 import Modal from '../Modal'
@@ -204,7 +205,7 @@ export default function WalletModal({
 
   // get wallets user can switch too, depending on device/browser
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+    const isTronLink = !!window.tronWeb
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
@@ -237,17 +238,17 @@ export default function WalletModal({
       // overwrite injected when needed
       if (option.connector === injected) {
         // don't show injected if there's no injected provider
-        if (!(window.web3 || window.ethereum)) {
-          if (option.name === 'MetaMask') {
+        if (!(window.tronWeb)) {
+          if (option.name === 'TronLink') {
             return (
               <Option
                 id={`connect-${key}`}
                 key={key}
-                color={'#E8831D'}
-                header={'Install Metamask'}
+                color={option.color}
+                header={'Install TronLink'}
                 subheader={null}
-                link={'https://metamask.io/'}
-                icon={MetamaskIcon}
+                link={'https://chrome.google.com/webstore/detail/tronlink%EF%BC%88%E6%B3%A2%E5%AE%9D%E9%92%B1%E5%8C%85%EF%BC%89/ibnejdfjmmkpcnlpebklmnkoeoihofec'}
+                icon={TronLinkIcon}
               />
             )
           } else {
@@ -255,11 +256,11 @@ export default function WalletModal({
           }
         }
         // don't return metamask if injected provider isn't metamask
-        else if (option.name === 'MetaMask' && !isMetamask) {
+        else if (option.name === 'TronLink' && !isTronLink) {
           return null
         }
         // likewise for generic
-        else if (option.name === 'Injected' && isMetamask) {
+        else if (option.name === 'Injected' && isTronLink) {
           return null
         }
       }
@@ -350,10 +351,13 @@ export default function WalletModal({
             <OptionGrid>{getOptions()}</OptionGrid>
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
+            /*
             <Blurb>
               <span>New to Ethereum? &nbsp;</span>{' '}
               <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
             </Blurb>
+            */
+            <Blurb />
           )}
         </ContentWrapper>
       </UpperSection>
