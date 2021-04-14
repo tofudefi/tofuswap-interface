@@ -14,22 +14,22 @@ import {
 describe('utils', () => {
   describe('#getEtherscanLink', () => {
     it('correct for tx', () => {
-      expect(getEtherscanLink(1, 'abc', 'transaction')).toEqual('https://tronscan.io/#/transaction/abc')
+      expect(getEtherscanLink(11111, 'abc', 'transaction')).toEqual('https://tronscan.io/#/transaction/abc')
     })
     it('correct for token', () => {
-      expect(getEtherscanLink(1, 'abc', 'token')).toEqual('https://tronscan.io/#/token20/abc')
+      expect(getEtherscanLink(11111, 'abc', 'token')).toEqual('https://tronscan.io/#/token20/8M5JoSg')
     })
     it('correct for address', () => {
-      expect(getEtherscanLink(1, 'abc', 'address')).toEqual('https://tronscan.io/#/address/abc')
+      expect(getEtherscanLink(11111, 'abc', 'address')).toEqual('https://tronscan.io/#/address/8M5JoSg')
     })
     it('unrecognized chain id defaults to mainnet', () => {
-      expect(getEtherscanLink(22, 'abc', 'address')).toEqual('https://tronscan.io/#/address/abc')
+      expect(getEtherscanLink(22, 'abc', 'address')).toEqual('https://tronscan.io/#/address/8M5JoSg')
     })
     it('shasta', () => {
-      expect(getEtherscanLink(2, 'abc', 'address')).toEqual('https://shasta.tronscan.io/#/address/abc')
+      expect(getEtherscanLink(1, 'abc', 'address')).toEqual('https://shasta.tronscan.io/#/address/8M5JoSg')
     })
     it('enum', () => {
-      expect(getEtherscanLink(ChainId.NILE, 'abc', 'address')).toEqual('https://nile.tronscan.io/#/address/abc')
+      expect(getEtherscanLink(ChainId.NILE, 'abc', 'address')).toEqual('https://nile.tronscan.io/#/address/8M5JoSg')
     })
   })
 
@@ -73,15 +73,15 @@ describe('utils', () => {
     })
 
     it('truncates middle characters', () => {
-      expect(shortenAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164...b92a')
+      expect(shortenAddress('0xf164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('TXya...pB82')
     })
 
     it('truncates middle characters even without prefix', () => {
-      expect(shortenAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('0xf164...b92a')
+      expect(shortenAddress('f164fc0ec4e93095b804a4795bbe1e041497b92a')).toBe('TXya...pB82')
     })
 
     it('renders checksummed address', () => {
-      expect(shortenAddress('0x2E1b342132A67Ea578e4E3B814bae2107dc254CC'.toLowerCase())).toBe('0x2E1b...54CC')
+      expect(shortenAddress('0x2E1b342132A67Ea578e4E3B814bae2107dc254CC'.toLowerCase())).toBe('TEAz...mrks')
     })
   })
 

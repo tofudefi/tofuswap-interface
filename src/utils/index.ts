@@ -7,6 +7,7 @@ import { abi as ITofuswapV2Router02ABI } from '@tofudefi/tofuswap-v2-periphery/b
 import { ROUTER_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, TRX } from '@tofudefi/tofuswap-sdk'
 import { TokenAddressMap } from '../state/lists/hooks'
+import { ethAddress } from '@tofudefi/java-tron-provider'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -18,9 +19,14 @@ export function isAddress(value: any): string | false {
 }
 
 const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  1: '',
-  2: 'shasta.',
-  3: 'nile.'
+  11111: '',
+  1: 'shasta.',
+  201910292: 'nile.'
+}
+
+
+function remove0xPrefix(data: string){
+    return data.replace(/^0x/, "");
 }
 
 export function getEtherscanLink(
@@ -28,26 +34,36 @@ export function getEtherscanLink(
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}tronscan.io`
+  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[11111]}tronscan.io`
 
   switch (type) {
     case 'transaction': {
-      return `${prefix}/#/transaction/${data}`
+      return `${prefix}/#/transaction/${remove0xPrefix(data)}`
     }
     case 'token': {
-      return `${prefix}/#/token20/${data}`
+      return `${prefix}/#/token20/${ethAddress.toTron(data)}`
     }
     case 'block': {
       return `${prefix}/#/block/${data}`
     }
     case 'address':
     default: {
-      return `${prefix}/#/address/${data}`
+      return `${prefix}/#/address/${ethAddress.toTron(data)}`
     }
   }
 }
 
-// shorten the checksummed version of the input address to have 0x + 4 characters at start and end
+// shorten the checksummed version of the input address to have 4 characters at start and end
+export function shortenAddress(address: string, chars = 4): string {
+  const parsed = isAddress(address)
+  if (!parsed) {
+    throw Error(`Invalid 'address' parameter '${address}'.`)
+  }
+  const tronAddress = ethAddress.toTron(parsed)
+  return `${tronAddress.substring(0, chars)}...${tronAddress.substr(-chars)}`
+}
+
+/*
 export function shortenAddress(address: string, chars = 4): string {
   const parsed = isAddress(address)
   if (!parsed) {
@@ -55,6 +71,7 @@ export function shortenAddress(address: string, chars = 4): string {
   }
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`
 }
+*/
 
 // add 10%
 export function calculateGasMargin(value: BigNumber): BigNumber {
