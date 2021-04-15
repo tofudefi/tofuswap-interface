@@ -8,7 +8,7 @@ import styled from 'styled-components'
 //import MetamaskIcon from '../../assets/images/metamask.png'
 import TronLinkIcon from '../../assets/images/tronlink.svg'
 import { ReactComponent as Close } from '../../assets/images/x.svg'
-import { fortmatic, injected, portis } from '../../connectors'
+import { fortmatic, injected /*, portis*/ } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { SUPPORTED_WALLETS } from '../../constants'
 import usePrevious from '../../hooks/usePrevious'
@@ -209,6 +209,7 @@ export default function WalletModal({
     return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
+      /*
       if (isMobile) {
         //disable portis on mobile for now
         if (option.connector === portis) {
@@ -234,6 +235,7 @@ export default function WalletModal({
         }
         return null
       }
+      */
 
       // overwrite injected when needed
       if (option.connector === injected) {
@@ -299,7 +301,7 @@ export default function WalletModal({
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>Please connect to the appropriate TRON network.</h5>
             ) : (
               'Error connecting. Try refreshing the page.'
             )}

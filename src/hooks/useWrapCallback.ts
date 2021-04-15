@@ -50,7 +50,7 @@ export default function useWrapCallback(
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient ETH balance'
+        inputError: sufficientBalance ? undefined : 'Insufficient TRX balance'
       }
     } else if (currencyEquals(WTRX[chainId], inputCurrency) && outputCurrency === TRX) {
       return {
