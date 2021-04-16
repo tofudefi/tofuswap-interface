@@ -1,13 +1,13 @@
 import { TokenAmount, Pair, Currency } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { abi as ITofuswapV2PairABI } from '@tofudefi/tofuswap-v2-core/build/ITofuswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../hooks'
 
 import { useMultipleContractSingleData } from '../state/multicall/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
+const PAIR_INTERFACE = new Interface(ITofuswapV2PairABI)
 
 export enum PairState {
   LOADING,
