@@ -2,16 +2,9 @@ import createTronLinkProvider from '@tofudefi/tronlink-provider'
 
 import { AbstractConnectorArguments, ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
+import { abis } from './tronlink-abis'
 //import warning from 'tiny-warning'
 
-
-export class NoEthereumProviderError extends Error {
-  public constructor() {
-    super()
-    this.name = this.constructor.name
-    this.message = 'No Ethereum provider was found on window.ethereum.'
-  }
-}
 
 export class UserRejectedRequestError extends Error {
   public constructor() {
@@ -27,7 +20,8 @@ export class InjectedTronConnector extends AbstractConnector {
   constructor(kwargs: AbstractConnectorArguments) {
     super(kwargs)
     this.provider = createTronLinkProvider({
-      network: process.env.REACT_APP_TRON_NETWORK
+      network: process.env.REACT_APP_TRON_NETWORK,
+      functionSignatures: abis
     }) 
 
 /*
@@ -41,7 +35,6 @@ export class InjectedTronConnector extends AbstractConnector {
   async requestProvider(args: any) {
     const res = await this.provider.request(args)
     console.log({ res })
-    // TODO: wrap error with throw new NoEthereumProviderError()?
     return res
   }
 
