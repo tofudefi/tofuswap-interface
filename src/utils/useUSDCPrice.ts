@@ -1,6 +1,7 @@
+//TODO: rename to USDT
 import { ChainId, Currency, currencyEquals, JSBI, Price, WTRX } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
-import { USDC } from '../constants'
+import { USDT } from '../constants'
 import { PairState, usePairs } from '../data/Reserves'
 import { useActiveWeb3React } from '../hooks'
 import { wrappedCurrency } from './wrappedCurrency'
@@ -18,8 +19,8 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
         chainId && wrapped && currencyEquals(WTRX[chainId], wrapped) ? undefined : currency,
         chainId ? WTRX[chainId] : undefined
       ],
-      [wrapped?.equals(USDC) ? undefined : wrapped, chainId === ChainId.MAINNET ? USDC : undefined],
-      [chainId ? WTRX[chainId] : undefined, chainId === ChainId.MAINNET ? USDC : undefined]
+      [wrapped?.equals(USDT) ? undefined : wrapped, chainId === ChainId.MAINNET ? USDT : undefined],
+      [chainId ? WTRX[chainId] : undefined, chainId === ChainId.MAINNET ? USDT : undefined]
     ],
     [chainId, currency, wrapped]
   )
@@ -33,14 +34,14 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
     if (wrapped.equals(WTRX[chainId])) {
       if (usdcPair) {
         const price = usdcPair.priceOf(WTRX[chainId])
-        return new Price(currency, USDC, price.denominator, price.numerator)
+        return new Price(currency, USDT, price.denominator, price.numerator)
       } else {
         return undefined
       }
     }
     // handle usdc
-    if (wrapped.equals(USDC)) {
-      return new Price(USDC, USDC, '1', '1')
+    if (wrapped.equals(USDT)) {
+      return new Price(USDT, USDT, '1', '1')
     }
 
     const ethPairETHAmount = ethPair?.reserveOf(WTRX[chainId])
@@ -49,16 +50,16 @@ export default function useUSDCPrice(currency?: Currency): Price | undefined {
 
     // all other tokens
     // first try the usdc pair
-    if (usdcPairState === PairState.EXISTS && usdcPair && usdcPair.reserveOf(USDC).greaterThan(ethPairETHUSDCValue)) {
+    if (usdcPairState === PairState.EXISTS && usdcPair && usdcPair.reserveOf(USDT).greaterThan(ethPairETHUSDCValue)) {
       const price = usdcPair.priceOf(wrapped)
-      return new Price(currency, USDC, price.denominator, price.numerator)
+      return new Price(currency, USDT, price.denominator, price.numerator)
     }
     if (ethPairState === PairState.EXISTS && ethPair && usdcEthPairState === PairState.EXISTS && usdcEthPair) {
-      if (usdcEthPair.reserveOf(USDC).greaterThan('0') && ethPair.reserveOf(WTRX[chainId]).greaterThan('0')) {
-        const ethUsdcPrice = usdcEthPair.priceOf(USDC)
+      if (usdcEthPair.reserveOf(USDT).greaterThan('0') && ethPair.reserveOf(WTRX[chainId]).greaterThan('0')) {
+        const ethUsdcPrice = usdcEthPair.priceOf(USDT)
         const currencyEthPrice = ethPair.priceOf(WTRX[chainId])
         const usdcPrice = ethUsdcPrice.multiply(currencyEthPrice).invert()
-        return new Price(currency, USDC, usdcPrice.denominator, usdcPrice.numerator)
+        return new Price(currency, USDT, usdcPrice.denominator, usdcPrice.numerator)
       }
     }
     return undefined
