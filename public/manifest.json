@@ -1,6 +1,6 @@
 {
-  "short_name": "Uniswap",
-  "name": "Uniswap",
+  "short_name": "Tofuswap",
+  "name": "Tofuswap",
   "icons": [
     {
       "src": "./images/192x192_App_Icon.png",
@@ -17,6 +17,6 @@
   ],
   "orientation": "portrait",
   "display": "standalone",
-  "theme_color": "#ff007a",
+  "theme_color": "#79b544",
   "background_color": "#fff"
 }
