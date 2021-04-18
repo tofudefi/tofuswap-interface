@@ -24,8 +24,10 @@ import { AddressZero } from '@ethersproject/constants'
 import { Dots } from '../../components/swap/styleds'
 import { Contract } from '@ethersproject/contracts'
 import { useTotalSupply } from '../../data/TotalSupply'
+import { DEFAULT_FEE_LIMIT } from '../../tron-config'
 
-const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+//const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+const SUN_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(6))
 const ZERO = JSBI.BigInt(0)
 const ONE = JSBI.BigInt(1)
 const ZERO_FRACTION = new Fraction(ZERO, ONE)
@@ -50,7 +52,7 @@ function V1PairRemoval({
   const shareFraction: Fraction = totalSupply ? new Percent(liquidityTokenAmount.raw, totalSupply.raw) : ZERO_FRACTION
 
   const ethWorth: CurrencyAmount = exchangeETHBalance
-    ? CurrencyAmount.trx(exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient)
+    ? CurrencyAmount.trx(exchangeETHBalance.multiply(shareFraction).multiply(SUN_DENOM).quotient)
     : CurrencyAmount.trx(ZERO)
 
   const tokenWorth: TokenAmount = exchangeTokenBalance
@@ -69,7 +71,8 @@ function V1PairRemoval({
         liquidityTokenAmount.raw.toString(),
         1, // min_eth, this is safe because we're removing liquidity
         1, // min_tokens, this is safe because we're removing liquidity
-        Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW
+        Math.floor(new Date().getTime() / 1000) + DEFAULT_DEADLINE_FROM_NOW,
+        { gasLimit: DEFAULT_FEE_LIMIT }
       )
       .then((response: TransactionResponse) => {
         ReactGA.event({
@@ -118,9 +121,9 @@ function V1PairRemoval({
         </div>
       </LightCard>
       <TYPE.darkGray style={{ textAlign: 'center' }}>
-        {`Your Uniswap V1 ${
+        {`Your Tofuswap V1 ${
           chainId && token.equals(WTRX[chainId]) ? 'WTRX' : token.symbol
-        }/ETH liquidity will be redeemed for underlying assets.`}
+        }/TRX liquidity will be redeemed for underlying assets.`}
       </TYPE.darkGray>
     </AutoColumn>
   )
@@ -141,7 +144,7 @@ export default function RemoveV1Exchange({
   const liquidityToken: Token | undefined = useMemo(
     () =>
       validatedAddress && chainId && token
-        ? new Token(chainId, validatedAddress, 18, `UNI-V1-${token.symbol}`, 'Uniswap V1')
+        ? new Token(chainId, validatedAddress, 18, `TOFU-V1-${token.symbol}`, 'Tofuswap V1')
         : undefined,
     [chainId, validatedAddress, token]
   )
@@ -160,7 +163,7 @@ export default function RemoveV1Exchange({
           <BackArrow to="/migrate/v1" />
           <TYPE.mediumHeader>Remove V1 Liquidity</TYPE.mediumHeader>
           <div>
-            <QuestionHelper text="Remove your Uniswap V1 liquidity tokens." />
+            <QuestionHelper text="Remove your Tofuswap V1 liquidity tokens." />
           </div>
         </AutoRow>
 

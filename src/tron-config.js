@@ -1,0 +1,1 @@
+export const DEFAULT_FEE_LIMIT = 100_000_000

@@ -344,7 +344,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
           <SearchInput
             type="text"
             id="list-add-input"
-            placeholder="https:// or ipfs:// or ENS name"
+            placeholder="https:// or ipfs://"
             value={listUrlInput}
             onChange={handleInput}
             onKeyDown={handleEnterKey}

@@ -29,7 +29,7 @@ import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { StyledInternalLink, TYPE } from '../../theme'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import { /*calculateGasMargin,*/ calculateSlippageAmount, getRouterContract } from '../../utils'
 import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -42,7 +42,8 @@ import { useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
 import { Field } from '../../state/burn/actions'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
-import { BigNumber } from '@ethersproject/bignumber'
+//import { BigNumber } from '@ethersproject/bignumber'
+import { DEFAULT_FEE_LIMIT } from '../../tron-config'
 
 export default function RemoveLiquidity({
   history,
@@ -209,8 +210,8 @@ export default function RemoveLiquidity({
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) throw new Error('missing liquidity amount')
 
-    const currencyBIsETH = currencyB === TRX
-    const oneCurrencyIsETH = currencyA === TRX || currencyBIsETH
+    const currencyBIsTRX = currencyB === TRX
+    const oneCurrencyIsTRX = currencyA === TRX || currencyBIsTRX
 
     if (!tokenA || !tokenB) throw new Error('could not wrap')
 
@@ -218,13 +219,13 @@ export default function RemoveLiquidity({
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       // removeLiquidityETH
-      if (oneCurrencyIsETH) {
-        methodNames = ['removeLiquidityETH', 'removeLiquidityETHSupportingFeeOnTransferTokens']
+      if (oneCurrencyIsTRX) {
+        methodNames = ['removeLiquidityTRX', 'removeLiquidityTRXSupportingFeeOnTransferTokens']
         args = [
-          currencyBIsETH ? tokenA.address : tokenB.address,
+          currencyBIsTRX ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
+          amountsMin[currencyBIsTRX ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
+          amountsMin[currencyBIsTRX ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
           deadline.toHexString()
         ]
@@ -246,13 +247,13 @@ export default function RemoveLiquidity({
     // we have a signataure, use permit versions of remove liquidity
     else if (signatureData !== null) {
       // removeLiquidityETHWithPermit
-      if (oneCurrencyIsETH) {
-        methodNames = ['removeLiquidityETHWithPermit', 'removeLiquidityETHWithPermitSupportingFeeOnTransferTokens']
+      if (oneCurrencyIsTRX) {
+        methodNames = ['removeLiquidityTRXWithPermit', 'removeLiquidityTRXWithPermitSupportingFeeOnTransferTokens']
         args = [
-          currencyBIsETH ? tokenA.address : tokenB.address,
+          currencyBIsTRX ? tokenA.address : tokenB.address,
           liquidityAmount.raw.toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
-          amountsMin[currencyBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
+          amountsMin[currencyBIsTRX ? Field.CURRENCY_A : Field.CURRENCY_B].toString(),
+          amountsMin[currencyBIsTRX ? Field.CURRENCY_B : Field.CURRENCY_A].toString(),
           account,
           signatureData.deadline,
           false,
@@ -282,6 +283,7 @@ export default function RemoveLiquidity({
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
     }
 
+/*
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map(methodName =>
         router.estimateGas[methodName](...args)
@@ -292,12 +294,17 @@ export default function RemoveLiquidity({
           })
       )
     )
+*/    
 
+    const indexOfSuccessfulEstimation = 0
+    /*
     const indexOfSuccessfulEstimation = safeGasEstimates.findIndex(safeGasEstimate =>
       BigNumber.isBigNumber(safeGasEstimate)
     )
+    */
 
     // all estimations failed...
+/*    
     if (indexOfSuccessfulEstimation === -1) {
       console.error('This transaction would fail. Please contact support.')
     } else {
@@ -338,6 +345,50 @@ export default function RemoveLiquidity({
         })
     }
   }
+*/
+
+
+    const methodName = methodNames[indexOfSuccessfulEstimation]
+    // const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
+
+    setAttemptingTxn(true)
+    await router[methodName](...args, {
+      // @TRON dummy value to prevent eth_gasEstimate call which is not implemented
+      gasLimit: DEFAULT_FEE_LIMIT
+      // gasLimit: safeGasEstimate
+    })
+      .then((response: TransactionResponse) => {
+        setAttemptingTxn(false)
+
+        addTransaction(response, {
+          summary:
+            'Remove ' +
+            parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
+            ' ' +
+            currencyA?.symbol +
+            ' and ' +
+            parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
+            ' ' +
+            currencyB?.symbol
+        })
+
+        setTxHash(response.hash)
+
+        ReactGA.event({
+          category: 'Liquidity',
+          action: 'Remove',
+          label: [currencyA?.symbol, currencyB?.symbol].join('/')
+        })
+
+      })
+      .catch((error: Error) => {
+        setAttemptingTxn(false)
+        // we only care if the error is something _other_ than the user rejected the tx
+        console.error(error)
+      })
+    //}
+  }
+
 
   function modalHeader() {
     return (
@@ -428,8 +479,8 @@ export default function RemoveLiquidity({
     [onUserInput]
   )
 
-  const oneCurrencyIsETH = currencyA === TRX || currencyB === TRX
-  const oneCurrencyIsWETH = Boolean(
+  const oneCurrencyIsTRX = currencyA === TRX || currencyB === TRX
+  const oneCurrencyIsWTRX = Boolean(
     chainId &&
       ((currencyA && currencyEquals(WTRX[chainId], currencyA)) ||
         (currencyB && currencyEquals(WTRX[chainId], currencyB)))
@@ -560,9 +611,9 @@ export default function RemoveLiquidity({
                         </Text>
                       </RowFixed>
                     </RowBetween>
-                    {chainId && (oneCurrencyIsWETH || oneCurrencyIsETH) ? (
+                    {chainId && (oneCurrencyIsWTRX || oneCurrencyIsTRX) ? (
                       <RowBetween style={{ justifyContent: 'flex-end' }}>
-                        {oneCurrencyIsETH ? (
+                        {oneCurrencyIsTRX ? (
                           <StyledInternalLink
                             to={`/remove/${currencyA === TRX ? WTRX[chainId].address : currencyIdA}/${
                               currencyB === TRX ? WTRX[chainId].address : currencyIdB
@@ -570,13 +621,13 @@ export default function RemoveLiquidity({
                           >
                             Receive WTRX
                           </StyledInternalLink>
-                        ) : oneCurrencyIsWETH ? (
+                        ) : oneCurrencyIsWTRX ? (
                           <StyledInternalLink
                             to={`/remove/${
-                              currencyA && currencyEquals(currencyA, WTRX[chainId]) ? 'ETH' : currencyIdA
-                            }/${currencyB && currencyEquals(currencyB, WTRX[chainId]) ? 'ETH' : currencyIdB}`}
+                              currencyA && currencyEquals(currencyA, WTRX[chainId]) ? 'TRX' : currencyIdA
+                            }/${currencyB && currencyEquals(currencyB, WTRX[chainId]) ? 'TRX' : currencyIdB}`}
                           >
-                            Receive ETH
+                            Receive TRX
                           </StyledInternalLink>
                         ) : null}
                       </RowBetween>
@@ -687,7 +738,7 @@ export default function RemoveLiquidity({
 
       {pair ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWTRX} pair={pair} />
         </AutoColumn>
       ) : null}
     </>

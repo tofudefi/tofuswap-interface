@@ -1,11 +1,11 @@
-import { BigNumber } from '@ethersproject/bignumber'
+//import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
+import { /*calculateGasMargin,*/ getRouterContract, isAddress, shortenAddress } from '../utils'
 import isZero from '../utils/isZero'
 import v1SwapArguments from '../utils/v1SwapArguments'
 import { useActiveWeb3React } from './index'
@@ -13,6 +13,7 @@ import { useV1ExchangeContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
+import { DEFAULT_FEE_LIMIT } from '../tron-config'
 
 export enum SwapCallbackState {
   INVALID,
@@ -25,6 +26,7 @@ interface SwapCall {
   parameters: SwapParameters
 }
 
+/*
 interface SuccessfulCall {
   call: SwapCall
   gasEstimate: BigNumber
@@ -34,8 +36,9 @@ interface FailedCall {
   call: SwapCall
   error: Error
 }
+*/
 
-type EstimatedSwapCall = SuccessfulCall | FailedCall
+//type EstimatedSwapCall = SuccessfulCall | FailedCall
 
 /**
  * Returns the swap calls that can be used to make the trade
@@ -137,6 +140,8 @@ export function useSwapCallback(
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
+        // @TRON we just ignore the estimateGas logic...
+        /*
         const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
           swapCalls.map(call => {
             const {
@@ -198,8 +203,20 @@ export function useSwapCallback(
           gasEstimate
         } = successfulEstimation
 
+       */
+
+        // @TODO(tron): make sure the right thing is to always pick first element of swapCalls
+        // console.log({ swapCalls })
+        const {
+          contract,
+          parameters: { methodName, args, value }
+          // gasEstimate
+        } = swapCalls[0]        
+
         return contract[methodName](...args, {
-          gasLimit: calculateGasMargin(gasEstimate),
+          // gasLimit: calculateGasMargin(gasEstimate),
+          // @TRON dummy gasLimit to prevent gas estimate (which is not implemented in java-tron-provider yet)
+          gasLimit: DEFAULT_FEE_LIMIT,
           ...(value && !isZero(value) ? { value, from: account } : { from: account })
         })
           .then((response: any) => {

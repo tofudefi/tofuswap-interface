@@ -8,10 +8,12 @@ import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
-import { calculateGasMargin } from '../utils'
+// import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveWeb3React } from './index'
 import { Version } from './useToggledVersion'
+
+import { DEFAULT_FEE_LIMIT } from '../tron-config'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -74,15 +76,18 @@ export function useApproveCallback(
     }
 
     let useExact = false
+/*    
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
       useExact = true
       return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
     })
+*/
 
     return tokenContract
       .approve(spender, useExact ? amountToApprove.raw.toString() : MaxUint256, {
-        gasLimit: calculateGasMargin(estimatedGas)
+//        gasLimit: calculateGasMargin(estimatedGas)
+        gasLimit: DEFAULT_FEE_LIMIT
       })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
