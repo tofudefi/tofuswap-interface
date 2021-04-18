@@ -50,6 +50,11 @@ export function useEagerConnect() {
  * and out after checking what network theyre on
  */
 export function useInactiveListener(suppress = false) {
+  return undefined
+}
+
+/*
+export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useWeb3ReactCore() // specifically using useWeb3React because of what this hook does
 
   useEffect(() => {
@@ -85,3 +90,4 @@ export function useInactiveListener(suppress = false) {
     return undefined
   }, [active, error, suppress, activate])
 }
+*/
