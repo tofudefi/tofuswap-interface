@@ -16,6 +16,14 @@ export const USDT = new Token(ChainId.MAINNET, '0xa614f803B6FD780986A42c78Ec9c7f
 export const USDJ = new Token(ChainId.MAINNET, '0x834295921a488d9d42b4b3021ed1a3c39fb0f03e', 6, 'USDJ', 'JUST Stablecoin')
 export const BTC = new Token(ChainId.MAINNET, '0x84716914c0fdf7110a44030d04d0c4923504d9cc', 8, 'BTC', 'Tron BTC')
 
+// USDT, USDJ, WINK, SUN, JST
+export const POPULAR_TOKENS_WO_LOGO_BY_ADDR = ['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
+                                               'TMwFHYXLJaRUPeW6421aqXL4ZEzPRFGkGT',
+                                               'TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7', 
+                                               'TKkeiboTkxXKJpbmVFbv4a8ov5rAfRDMf9',
+                                               'TCFLL5dx5ZJdKnWuesXxi1VPwjLVmWZZy9']
+
+
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 export const AVERAGE_BLOCK_TIME_IN_SECS = 14
 export const PROPOSAL_LENGTH_IN_BLOCKS = 40_320

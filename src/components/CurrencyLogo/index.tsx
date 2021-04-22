@@ -9,10 +9,15 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 import { ethAddress } from '@tofudefi/java-tron-provider'
+import { POPULAR_TOKENS_WO_LOGO_BY_ADDR } from '../../constants'
 
 const getTokenLogoURL = (address: string) => {
   const tronAddress = ethAddress.toTron(address)
-  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/assets/${tronAddress}/logo.png`
+  
+  if (POPULAR_TOKENS_WO_LOGO_BY_ADDR.indexOf(tronAddress) >= 0) {
+      return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/assets/${tronAddress}/logo.png`
+  } 
+  return `https://coin.top/production/upload/logo/${tronAddress}.png`
 }
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
