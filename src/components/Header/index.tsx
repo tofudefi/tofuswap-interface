@@ -11,10 +11,10 @@ import Logo from '../../assets/svg/logo.svg'
 import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
+import { useETHBalances, useAggregateTofuBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
-import { TYPE, ExternalLink } from '../../theme'
+import { TYPE/*, ExternalLink*/ } from '../../theme'
 
 import { YellowCard } from '../Card'
 import Settings from '../Settings'
@@ -22,11 +22,11 @@ import Menu from '../Menu'
 
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
-import ClaimModal from '../claim/ClaimModal'
-import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
-import { useUserHasAvailableClaim } from '../../state/claim/hooks'
-import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
-import { Dots } from '../swap/styleds'
+//import ClaimModal from '../claim/ClaimModal'
+//import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
+//import { useUserHasAvailableClaim } from '../../state/claim/hooks'
+//import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
+//import { Dots } from '../swap/styleds'
 import Modal from '../Modal'
 import UniBalanceContent from './UniBalanceContent'
 import usePrevious from '../../hooks/usePrevious'
@@ -125,6 +125,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `
 
+
 const UNIAmount = styled(AccountElement)`
   color: white;
   padding: 4px 8px;
@@ -222,7 +223,7 @@ const StyledNavLink = styled(NavLink).attrs({
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
 `
-
+/*
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
 })<{ isActive?: boolean }>`
@@ -253,10 +254,12 @@ const StyledExternalLink = styled(ExternalLink).attrs({
       display: none;
 `}
 `
+*/
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
-  [ChainId.SHASTA]: 'Shasta',
-  [ChainId.NILE]: 'Nile'
+  [ChainId.MAINNET]: '',
+  [ChainId.NILE]: 'Nile',
+  [ChainId.SHASTA]: 'Shasta'
 }
 
 export default function Header() {
@@ -266,23 +269,23 @@ export default function Header() {
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [isDark] = useDarkModeManager()
 
-  const toggleClaimModal = useToggleSelfClaimModal()
+//  const toggleClaimModal = useToggleSelfClaimModal()
 
-  const availableClaim: boolean = useUserHasAvailableClaim(account)
+  const availableClaim: boolean = false //useUserHasAvailableClaim(account)
 
-  const { claimTxn } = useUserHasSubmittedClaim(account ?? undefined)
+//  const { claimTxn } = useUserHasSubmittedClaim(account ?? undefined)
 
-  const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
+  const aggregateBalance: TokenAmount | undefined = useAggregateTofuBalance()
 
   const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
-  const showClaimPopup = useShowClaimPopup()
+//  const showClaimPopup = useShowClaimPopup()
 
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (
     <HeaderFrame>
-      <ClaimModal />
+      {/* <ClaimModal /> */}
       <Modal isOpen={showUniBalanceModal} onDismiss={() => setShowUniBalanceModal(false)}>
         <UniBalanceContent setShowUniBalanceModal={setShowUniBalanceModal} />
       </Modal>
@@ -309,15 +312,19 @@ export default function Header() {
           >
             {t('pool')}
           </StyledNavLink>
-          <StyledNavLink id={`stake-nav-link`} to={'/uni'}>
-            UNI
+          <StyledNavLink id={`stake-nav-link`} to={'/tofu'}>
+            TOFU
           </StyledNavLink>
+          {/* comment vote
           <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
             Vote
-          </StyledNavLink>
+          </StyledNavLink> 
+          */}
+          {/* comment charts for now
           <StyledExternalLink id={`stake-nav-link`} href={'https://uniswap.info'}>
             Charts <span style={{ fontSize: '11px' }}>↗</span>
           </StyledExternalLink>
+          */}
         </HeaderLinks>
       </HeaderRow>
       <HeaderControls>
@@ -327,7 +334,7 @@ export default function Header() {
               <NetworkCard title={NETWORK_LABELS[chainId]}>{NETWORK_LABELS[chainId]}</NetworkCard>
             )}
           </HideSmall>
-          {availableClaim && !showClaimPopup && (
+          {/* availableClaim && !showClaimPopup && (
             <UNIWrapper onClick={toggleClaimModal}>
               <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
                 <TYPE.white padding="0 2px">
@@ -336,8 +343,8 @@ export default function Header() {
               </UNIAmount>
               <CardNoise />
             </UNIWrapper>
-          )}
-          {!availableClaim && aggregateBalance && (
+          )*/}
+          { !availableClaim && aggregateBalance && (
             <UNIWrapper onClick={() => setShowUniBalanceModal(true)}>
               <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
                 {account && (
@@ -358,11 +365,11 @@ export default function Header() {
                     </TYPE.white>
                   </HideSmall>
                 )}
-                UNI
+                TOFU
               </UNIAmount>
               <CardNoise />
             </UNIWrapper>
-          )}
+          ) }
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>

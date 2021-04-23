@@ -1,4 +1,4 @@
-import { UNI } from './../../constants/index'
+import { TOFU, TOFU_FREEZER } from './../../constants/index'
 import { Currency, CurrencyAmount, TRX, JSBI, Token, TokenAmount } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
@@ -7,7 +7,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
-import { useTotalUniEarned } from '../stake/hooks'
+//import { useTotalUniEarned } from '../stake/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -133,22 +133,24 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   return balances ?? {}
 }
 
-// get the total owned, unclaimed, and unharvested UNI for account
-export function useAggregateUniBalance(): TokenAmount | undefined {
+// get the total owned and freezed TOFU for account
+export function useAggregateTofuBalance(): TokenAmount | undefined {
   const { account, chainId } = useActiveWeb3React()
 
-  const uni = chainId ? UNI[chainId] : undefined
+  const tofu = chainId ? TOFU[chainId] : undefined
+  const tofuFreezer = chainId ? TOFU_FREEZER[chainId] : undefined
 
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, uni)
-  const uniUnHarvested: TokenAmount | undefined = useTotalUniEarned()
+  const tofuBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofu)
+  const freezedBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofuFreezer)
+//  const uniUnHarvested: TokenAmount | undefined = useTotalUniEarned()
 
-  if (!uni) return undefined
+  if (!tofu) return undefined
 
   return new TokenAmount(
-    uni,
+    tofu,
     JSBI.add(
-      uniBalance?.raw ?? JSBI.BigInt(0),
-      uniUnHarvested?.raw ?? JSBI.BigInt(0)
+      tofuBalance?.raw ?? JSBI.BigInt(0),
+      freezedBalance?.raw ?? JSBI.BigInt(0)
     )
   )
 }

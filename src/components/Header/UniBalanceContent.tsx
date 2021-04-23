@@ -1,17 +1,17 @@
-import { ChainId, TokenAmount } from '@tofudefi/tofuswap-sdk'
-import React, { useMemo } from 'react'
+import { /*ChainId,*/ TokenAmount } from '@tofudefi/tofuswap-sdk'
+import React/*, { useMemo }*/ from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
-import { UNI } from '../../constants'
+import { TOFU, TOFU_FREEZER, BIG_INT_ZERO } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
-import { useMerkleDistributorContract } from '../../hooks/useContract'
-import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
-import { useTotalUniEarned } from '../../state/stake/hooks'
-import { useAggregateUniBalance, useTokenBalance } from '../../state/wallet/hooks'
-import { ExternalLink, StyledInternalLink, TYPE, UniTokenAnimated } from '../../theme'
-import { computeUniCirculation } from '../../utils/computeUniCirculation'
+//import { useMerkleDistributorContract } from '../../hooks/useContract'
+//import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
+//import { useTotalUniEarned } from '../../state/stake/hooks'
+import { useAggregateTofuBalance, useTokenBalance } from '../../state/wallet/hooks'
+import { /*ExternalLink, StyledInternalLink,*/ TYPE, UniTokenAnimated } from '../../theme'
+//import { computeUniCirculation } from '../../utils/computeUniCirculation'
 import useUSDCPrice from '../../utils/useUSDCPrice'
 import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
@@ -42,23 +42,38 @@ const StyledClose = styled(X)`
  */
 export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowUniBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
-  const uni = chainId ? UNI[chainId] : undefined
+  const tofu = chainId ? TOFU[chainId] : undefined
+  const tofuFreezer = chainId ? TOFU_FREEZER[chainId] : undefined
 
-  const total = useAggregateUniBalance()
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, uni)
-  const uniToClaim: TokenAmount | undefined = useTotalUniEarned()
+  const zero = BIG_INT_ZERO
 
-  const totalSupply: TokenAmount | undefined = useTotalSupply(uni)
-  const uniPrice = useUSDCPrice(uni)
-  const blockTimestamp = useCurrentBlockTimestamp()
-  const unclaimedUni = useTokenBalance(useMerkleDistributorContract()?.address, uni)
+  const zeroAmount = tofu ? new TokenAmount(tofu, zero) : undefined;
+
+  const total = useAggregateTofuBalance()
+  let tofuBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofu)
+  let freezedBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofuFreezer)
+  
+  if (!account){
+    tofuBalance = zeroAmount
+    freezedBalance = zeroAmount
+  }
+  
+//  const uniToClaim: TokenAmount | undefined = useTotalUniEarned()
+
+  const totalSupply: TokenAmount | undefined = useTotalSupply(tofu)
+  const uniPrice = useUSDCPrice(tofu)
+//  const blockTimestamp = useCurrentBlockTimestamp()
+//  const unclaimedUni = useTokenBalance(useMerkleDistributorContract()?.address, tofu)
+  
+/*  
   const circulation: TokenAmount | undefined = useMemo(
     () =>
-      blockTimestamp && uni && chainId === ChainId.MAINNET
-        ? computeUniCirculation(uni, blockTimestamp, unclaimedUni)
+      blockTimestamp && tofu && chainId === ChainId.MAINNET
+        ? computeUniCirculation(tofu, blockTimestamp, unclaimedUni)
         : totalSupply,
-    [blockTimestamp, chainId, totalSupply, unclaimedUni, uni]
+    [blockTimestamp, chainId, totalSupply, unclaimedUni, tofu]
   )
+*/
 
   return (
     <ContentWrapper gap="lg">
@@ -67,12 +82,12 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
         <CardNoise />
         <CardSection gap="md">
           <RowBetween>
-            <TYPE.white color="white">Your UNI Breakdown</TYPE.white>
+            <TYPE.white color="white">Your TOFU</TYPE.white>
             <StyledClose stroke="white" onClick={() => setShowUniBalanceModal(false)} />
           </RowBetween>
         </CardSection>
         <Break />
-        {account && (
+        {/*account &&*/ (
           <>
             <CardSection gap="sm">
               <AutoColumn gap="md" justify="center">
@@ -84,8 +99,13 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
               <AutoColumn gap="md">
                 <RowBetween>
                   <TYPE.white color="white">Balance:</TYPE.white>
-                  <TYPE.white color="white">{uniBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                  <TYPE.white color="white">{tofuBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
                 </RowBetween>
+                <RowBetween>
+                  <TYPE.white color="white">Freezed:</TYPE.white>
+                  <TYPE.white color="white">{freezedBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                </RowBetween>
+                {/*
                 <RowBetween>
                   <TYPE.white color="white">Unclaimed:</TYPE.white>
                   <TYPE.white color="white">
@@ -97,6 +117,7 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
                     )}
                   </TYPE.white>
                 </RowBetween>
+                */}
               </AutoColumn>
             </CardSection>
             <Break />
@@ -105,20 +126,22 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
         <CardSection gap="sm">
           <AutoColumn gap="md">
             <RowBetween>
-              <TYPE.white color="white">UNI price:</TYPE.white>
+              <TYPE.white color="white">TOFU price:</TYPE.white>
               <TYPE.white color="white">${uniPrice?.toFixed(2) ?? '-'}</TYPE.white>
             </RowBetween>
+            {/*
             <RowBetween>
-              <TYPE.white color="white">UNI in circulation:</TYPE.white>
+              <TYPE.white color="white">TOFU in circulation:</TYPE.white>
               <TYPE.white color="white">{circulation?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
             </RowBetween>
+            */}
             <RowBetween>
               <TYPE.white color="white">Total Supply</TYPE.white>
               <TYPE.white color="white">{totalSupply?.toFixed(0, { groupSeparator: ',' })}</TYPE.white>
             </RowBetween>
-            {uni && uni.chainId === ChainId.MAINNET ? (
-              <ExternalLink href={`https://uniswap.info/token/${uni.address}`}>View UNI Analytics</ExternalLink>
-            ) : null}
+            {/* tofu && tofu.chainId === ChainId.MAINNET ? (
+              <ExternalLink href={`https://uniswap.info/token/${uni.address}`}>View TOFU Analytics</ExternalLink>
+            ) : null */}
           </AutoColumn>
         </CardSection>
       </ModalUpper>
