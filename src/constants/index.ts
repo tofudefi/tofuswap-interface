@@ -33,15 +33,28 @@ export const GOVERNANCE_ADDRESS = '0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F'
 
 export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
 
-const UNI_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
+const TOFU_ADDRESS_MAINNET = '0xc25753642a59cdd8344ffe2e49bd112bfad26bd3'
+const TOFU_ADDRESS = '0xc25753642a59cdd8344ffe2e49bd112bfad26bd3'
+
 export const UNI: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.SHASTA]: new Token(ChainId.SHASTA, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.NILE]: new Token(ChainId.NILE, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, TOFU_ADDRESS_MAINNET, 6, 'TOFU', 'TofuDeFi Token'),
+  [ChainId.SHASTA]: new Token(ChainId.SHASTA, TOFU_ADDRESS, 6, 'TOFU', 'TofuDeFi Token'),
+  [ChainId.NILE]: new Token(ChainId.NILE, TOFU_ADDRESS, 6, 'TOFU', 'TofuDeFi Token')
+}
+export const TOFU = UNI
+
+const TOFU_FREEZER_ADDRESS = '0x4b51442c89d2a87480f29a5470fdc3f9619869e1'
+const TOFU_FREEZER_ADDRESS_NILE = '0x4356b8c17fc6476678cd201691b9c678feb531f1'
+
+
+export const TOFU_FREEZER: { [chainId in ChainId]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, TOFU_FREEZER_ADDRESS, 6, 'TOFU', 'TofuFreezer'),
+  [ChainId.SHASTA]: new Token(ChainId.SHASTA, TOFU_FREEZER_ADDRESS, 6, 'TOFU', 'TofuFreezer'),
+  [ChainId.NILE]: new Token(ChainId.NILE, TOFU_FREEZER_ADDRESS_NILE, 6, 'TOFU', 'TofuFreezer')
 }
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
-  [UNI_ADDRESS]: 'UNI',
+  [TOFU_ADDRESS]: 'TOFU',
   [GOVERNANCE_ADDRESS]: 'Governance',
   [TIMELOCK_ADDRESS]: 'Timelock'
 }
