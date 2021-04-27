@@ -154,3 +154,15 @@ export function useAggregateTofuBalance(): TokenAmount | undefined {
     )
   )
 }
+
+export function useTofuFreezedBalance(): TokenAmount | undefined {
+  const { account, chainId } = useActiveWeb3React()
+  const tofuFreezer = chainId ? TOFU_FREEZER[chainId] : undefined
+
+  const tofuFreezed = useTokenBalance(account ?? undefined, tofuFreezer)
+
+  return useMemo(
+    () => tofuFreezed,
+    [account, tofuFreezed]
+  )
+}
