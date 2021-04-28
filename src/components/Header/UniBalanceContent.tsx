@@ -3,13 +3,13 @@ import React/*, { useMemo }*/ from 'react'
 import { X } from 'react-feather'
 import styled from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
-import { TOFU, TOFU_FREEZER, BIG_INT_ZERO } from '../../constants'
+import { TOFU, BIG_INT_ZERO } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
 //import { useMerkleDistributorContract } from '../../hooks/useContract'
 //import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 //import { useTotalUniEarned } from '../../state/stake/hooks'
-import { useAggregateTofuBalance, useTokenBalance } from '../../state/wallet/hooks'
+import { useAggregateTofuBalance, useTokenBalance, useTofuFreezedBalance } from '../../state/wallet/hooks'
 import { /*ExternalLink, StyledInternalLink,*/ TYPE, UniTokenAnimated } from '../../theme'
 //import { computeUniCirculation } from '../../utils/computeUniCirculation'
 import useUSDCPrice from '../../utils/useUSDCPrice'
@@ -43,15 +43,13 @@ const StyledClose = styled(X)`
 export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowUniBalanceModal: any }) {
   const { account, chainId } = useActiveWeb3React()
   const tofu = chainId ? TOFU[chainId] : undefined
-  const tofuFreezer = chainId ? TOFU_FREEZER[chainId] : undefined
-
   const zero = BIG_INT_ZERO
 
   const zeroAmount = tofu ? new TokenAmount(tofu, zero) : undefined;
 
   const total = useAggregateTofuBalance()
   let tofuBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofu)
-  let freezedBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, tofuFreezer)
+  let freezedBalance: TokenAmount | undefined = useTofuFreezedBalance()
   
   if (!account){
     tofuBalance = zeroAmount
@@ -91,7 +89,7 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
           <>
             <CardSection gap="sm">
               <AutoColumn gap="md" justify="center">
-                <UniTokenAnimated width="48px" src={tokenLogo} />{' '}
+                <UniTokenAnimated width="100px" src={tokenLogo} />{' '}
                 <TYPE.white fontSize={48} fontWeight={600} color="white">
                   {total?.toFixed(2, { groupSeparator: ',' })}
                 </TYPE.white>
