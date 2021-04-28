@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@tofudefi/tofuswap-sdk'
+import { CurrencyAmount, JSBI, Token, Trade, TokenAmount } from '@tofudefi/tofuswap-sdk'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -44,6 +44,7 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import AppBody from '../AppBody'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
+import { useTofuFreezedBalance } from '../../state/wallet/hooks'
 
 export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -63,6 +64,8 @@ export default function Swap() {
   }, [])
 
   const { account } = useActiveWeb3React()
+  const tofuFreezed: TokenAmount | undefined = useTofuFreezedBalance()
+
   const theme = useContext(ThemeContext)
 
   // toggle wallet when disconnected
@@ -84,7 +87,7 @@ export default function Swap() {
     parsedAmount,
     currencies,
     inputError: swapInputError
-  } = useDerivedSwapInfo()
+  } = useDerivedSwapInfo(tofuFreezed)
   const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
