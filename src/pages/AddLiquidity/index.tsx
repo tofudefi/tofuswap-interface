@@ -38,6 +38,8 @@ import { Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
+import { useTofuFreezedBalance } from '../../state/wallet/hooks'
+import JSBI from 'jsbi'
 
 import { DEFAULT_FEE_LIMIT } from '../../tron-config'
 
@@ -48,12 +50,16 @@ export default function AddLiquidity({
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
+
+  const tofuFreezed: TokenAmount | undefined = useTofuFreezedBalance()
+  const isGovernor = tofuFreezed !== undefined ? JSBI.greaterThanOrEqual(tofuFreezed.numerator, JSBI.BigInt(100000000000)) : false 
+
   const theme = useContext(ThemeContext)
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const oneCurrencyIsWETH = Boolean(
+  const oneCurrencyIsWTRX = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WTRX[chainId])) ||
         (currencyB && currencyEquals(currencyB, WTRX[chainId])))
@@ -337,7 +343,15 @@ export default function AddLiquidity({
             {noLiquidity ||
               (isCreate && (
                 <ColumnCenter>
-                  <BlueCard>
+                  <BlueCard style={{ marginBottom: '25px' }}>
+                   { !isGovernor && (
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                        You should be a Governor to create a pair. To become Governor you need to have 100,000 TOFU and freeze them on TofuFreezer contract.
+                      </TYPE.link>
+                    </AutoColumn>
+                   )}
+                   { isGovernor && (
                     <AutoColumn gap="10px">
                       <TYPE.link fontWeight={600} color={'primaryText1'}>
                         You are the first liquidity provider.
@@ -349,9 +363,25 @@ export default function AddLiquidity({
                         Once you are happy with the rate click supply to review.
                       </TYPE.link>
                     </AutoColumn>
+                    )}
                   </BlueCard>
                 </ColumnCenter>
               ))}
+            {noLiquidity && !isGovernor && (
+                 <ColumnCenter>
+                  <BlueCard style={{ marginBottom: '25px' }}>
+                    <AutoColumn gap="10px">
+                      <TYPE.link fontWeight={600} color={'primaryText1'}>
+                        You should be a Governor to create a pair. To become Governor you need to have 100,000 TOFU and freeze them on TofuFreezer contract.
+                      </TYPE.link>
+                    </AutoColumn>
+                   </BlueCard>
+                </ColumnCenter>
+              )}
+            </AutoColumn>
+
+            { ( isGovernor || !isCreate ) && (
+            <AutoColumn gap="20px">
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
@@ -441,22 +471,23 @@ export default function AddLiquidity({
                   onClick={() => {
                     expertMode ? onAdd() : setShowConfirm(true)
                   }}
-                  disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-                  error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+                  disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED || ( !isGovernor && (isCreate || noLiquidity) ) }
+                  error={(!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]) || ( !isGovernor && (isCreate || noLiquidity)) }
                 >
                   <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Supply'}
+                    {error ?? ( !isGovernor && (isCreate || noLiquidity) ? 'Not a Governor' : 'Supply')}
                   </Text>
                 </ButtonError>
               </AutoColumn>
             )}
           </AutoColumn>
+          )}
         </Wrapper>
       </AppBody>
 
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWTRX} pair={pair} />
         </AutoColumn>
       ) : null}
     </>
