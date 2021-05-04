@@ -8,9 +8,9 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
+//import LogoDark from '../../assets/svg/logo_white.svg'
 import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
+//import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateTofuBalance } from '../../state/wallet/hooks'
 import { CardNoise } from '../earn/styled'
 import { CountUp } from 'use-count-up'
@@ -41,7 +41,7 @@ const HeaderFrame = styled.div`
   width: 100%;
   top: 0;
   position: relative;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0.1);*/
   padding: 1rem;
   z-index: 2;
   ${({ theme }) => theme.mediaWidth.upToMedium`
@@ -131,8 +131,8 @@ const UNIAmount = styled(AccountElement)`
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.bg3};
-  background: radial-gradient(174.47% 188.91% at 1.84% 0%, #ff007a 0%, #2172e5 100%), #edeef2;
+  background-color: ${({ theme }) => theme.primary1};
+  /*background: radial-gradient(174.47% 188.91% at 1.84% 0%, #ff007a 0%, #2172e5 100%), #edeef2;*/
 `
 
 const UNIWrapper = styled.span`
@@ -215,12 +215,12 @@ const StyledNavLink = styled(NavLink).attrs({
   &.${activeClassName} {
     border-radius: 12px;
     font-weight: 600;
-    color: ${({ theme }) => theme.text1};
+    color: ${({ theme }) => theme.text6};
   }
 
   :hover,
   :focus {
-    color: ${({ theme }) => darken(0.1, theme.text1)};
+    color: ${({ theme }) => darken(0.1, theme.text6)};
   }
 `
 /*
@@ -267,7 +267,7 @@ export default function Header() {
   const { t } = useTranslation()
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
-  const [isDark] = useDarkModeManager()
+//  const [isDark] = useDarkModeManager()
 
 //  const toggleClaimModal = useToggleSelfClaimModal()
 
@@ -292,7 +292,7 @@ export default function Header() {
       <HeaderRow>
         <Title href=".">
           <UniIcon>
-            <img width={'24px'} src={isDark ? LogoDark : Logo} alt="logo" />
+            <img width={'53px'} src={ Logo } alt="logo" />
           </UniIcon>
         </Title>
         <HeaderLinks>
@@ -373,7 +373,7 @@ export default function Header() {
           <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={500}>
-                {userEthBalance?.toSignificant(4)} TRX
+                {userEthBalance?.toFixed(2)} TRX
               </BalanceText>
             ) : null}
             <Web3Status />

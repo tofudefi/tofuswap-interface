@@ -11,14 +11,14 @@ import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import { RowBetween, RowFixed } from '../../components/Row'
-import { ButtonPrimary, ButtonSecondary } from '../../components/Button'
+import { ButtonPrimary, ButtonLight } from '../../components/Button'
 import { AutoColumn } from '../../components/Column'
 
 import { useActiveWeb3React } from '../../hooks'
 import { usePairs } from '../../data/Reserves'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import { Dots } from '../../components/swap/styleds'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
+import { CardSection, DataCard, CardNoise } from '../../components/earn/styled'
 //import { useStakingInfo } from '../../state/stake/hooks'
 //import { BIG_INT_ZERO } from '../../constants'
 
@@ -28,7 +28,9 @@ const PageWrapper = styled(AutoColumn)`
 `
 
 const VoteCard = styled(DataCard)`
-  background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
+  background-image: -moz-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
+  background-image: -webkit-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
+  background-image: -ms-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
   overflow: hidden;
 `
 
@@ -57,7 +59,7 @@ const ResponsiveButtonPrimary = styled(ButtonPrimary)`
   `};
 `
 
-const ResponsiveButtonSecondary = styled(ButtonSecondary)`
+const ResponsiveButtonLight = styled(ButtonLight)`
   width: fit-content;
   ${({ theme }) => theme.mediaWidth.upToSmall`
     width: 48%;
@@ -131,7 +133,7 @@ export default function Pool() {
       <PageWrapper>
         <SwapPoolTabs active={'pool'} />
         <VoteCard>
-          <CardBGImage />
+          {/*<CardBGImage />*/}
           <CardNoise />
           <CardSection>
             <AutoColumn gap="md">
@@ -152,7 +154,7 @@ export default function Pool() {
               </ExternalLink>
             </AutoColumn>
           </CardSection>
-          <CardBGImage />
+          {/*<CardBGImage />*/}
           <CardNoise />
         </VoteCard>
 
@@ -165,9 +167,9 @@ export default function Pool() {
                 </TYPE.mediumHeader>
               </HideSmall>
               <ButtonRow>
-                <ResponsiveButtonSecondary as={Link} padding="6px 8px" to="/create/TRX">
+                <ResponsiveButtonLight as={Link} padding="6px 8px" to="/create/TRX">
                   Create a pair
-                </ResponsiveButtonSecondary>
+                </ResponsiveButtonLight>
                 <ResponsiveButtonPrimary id="join-pool-button" as={Link} padding="6px 8px" to="/add/TRX">
                   <Text fontWeight={500} fontSize={16}>
                     Add Liquidity
@@ -178,13 +180,13 @@ export default function Pool() {
 
             {!account ? (
               <Card padding="40px">
-                <TYPE.body color={theme.text3} textAlign="center">
+                <TYPE.body color={theme.text31} textAlign="center">
                   Connect to a wallet to view your liquidity.
                 </TYPE.body>
               </Card>
             ) : v2IsLoading ? (
               <EmptyProposals>
-                <TYPE.body color={theme.text3} textAlign="center">
+                <TYPE.body color={theme.text31} textAlign="center">
                   <Dots>Loading</Dots>
                 </TYPE.body>
               </EmptyProposals>

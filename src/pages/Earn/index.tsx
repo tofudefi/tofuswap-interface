@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { TYPE, ExternalLink } from '../../theme'
 //import PoolCard from '../../components/earn/PoolCard'
 import { RowBetween } from '../../components/Row'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
+import { CardSection, DataCard, CardNoise/*, CardBGImage*/ } from '../../components/earn/styled'
 //import { Countdown } from './Countdown'
 //import Loader from '../../components/Loader'
 //import { useActiveWeb3React } from '../../hooks'
@@ -31,13 +31,13 @@ const PoolSection = styled.div`
   width: 100%;
   justify-self: center;
 `
+*/
 
 const DataRow = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
 flex-direction: column;
 `};
 `
-*/
 
 export default function Earn() {
   //const { chainId } = useActiveWeb3React()
@@ -58,32 +58,37 @@ export default function Earn() {
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
         <DataCard>
-          <CardBGImage />
+          {/*<CardBGImage />*/}
           <CardNoise />
           <CardSection>
             <AutoColumn gap="md">
               <RowBetween>
-                <TYPE.white fontWeight={600}>Tofuswap liquidity mining</TYPE.white>
+                <TYPE.white fontWeight={600} color="black">Tofuswap liquidity mining</TYPE.white>
               </RowBetween>
               <RowBetween>
-                <TYPE.white fontSize={14}>
+                <TYPE.white fontSize={14} color="black">
                   Deposit your Liquidity Provider tokens to receive TOFU, the TofuDefi protocol governance token.
                 </TYPE.white>
               </RowBetween>{' '}
               <ExternalLink
-                style={{ color: 'white', textDecoration: 'underline' }}
+                style={{ color: 'black', textDecoration: 'underline' }}
                 href="https://medium.com/tofudefi"
                 target="_blank"
               >
-                <TYPE.white fontSize={14}>Read more about TOFU</TYPE.white>
+                <TYPE.white fontSize={14} color="black">Read more about TOFU</TYPE.white>
               </ExternalLink>
             </AutoColumn>
           </CardSection>
-          <CardBGImage />
+          {/*<CardBGImage />*/}
           <CardNoise />
         </DataCard>
       </TopSection>
 
+      <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
+        <DataRow style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <TYPE.mediumHeader style={{ marginTop: '0.5rem' }}>Coming soon...</TYPE.mediumHeader>
+        </DataRow>
+      </AutoColumn>
 
 {/*
       <AutoColumn gap="lg" style={{ width: '100%', maxWidth: '720px' }}>
