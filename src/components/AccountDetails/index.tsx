@@ -21,7 +21,7 @@ import FortmaticIcon from '../../assets/images/fortmaticIcon.png'
 import PortisIcon from '../../assets/images/portisIcon.png'
 */
 import Identicon from '../Identicon'
-import { ButtonSecondary } from '../Button'
+import { ButtonLight } from '../Button'
 import { ExternalLink as LinkIcon } from 'react-feather'
 import { ExternalLink, LinkStyledButton, TYPE } from '../../theme'
 import { ethAddress } from '@tofudefi/java-tron-provider'
@@ -58,7 +58,7 @@ const UpperSection = styled.div`
 
 const InfoCard = styled.div`
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.bg3};
+  border: 1px solid ${({ theme }) => theme.bg15};
   border-radius: 20px;
   position: relative;
   display: grid;
@@ -102,7 +102,7 @@ const LowerSection = styled.div`
   padding: 1.5rem;
   flex-grow: 1;
   overflow: auto;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg7};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 
@@ -137,12 +137,12 @@ const AccountControl = styled.div`
 
 const AddressLink = styled(ExternalLink)<{ hasENS: boolean; isENS: boolean }>`
   font-size: 0.825rem;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.text31};
   margin-left: 1rem;
   font-size: 0.825rem;
   display: flex;
   :hover {
-    color: ${({ theme }) => theme.text2};
+    color: ${({ theme }) => theme.text32};
   }
 `
 
@@ -166,7 +166,7 @@ const WalletName = styled.div`
   width: initial;
   font-size: 0.825rem;
   font-weight: 500;
-  color: ${({ theme }) => theme.text3};
+  color: ${({ theme }) => theme.text31};
 `
 
 const IconWrapper = styled.div<{ size?: number }>`
@@ -188,7 +188,7 @@ const TransactionListWrapper = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap};
 `
 
-const WalletAction = styled(ButtonSecondary)`
+const WalletAction = styled(ButtonLight)`
   width: fit-content;
   font-weight: 400;
   margin-left: 8px;

@@ -65,7 +65,7 @@ export const ButtonPrimary = styled(Base)`
 
 export const ButtonLight = styled(Base)`
   background-color: ${({ theme }) => theme.primary5};
-  color: ${({ theme }) => theme.primaryText1};
+  color: ${({ theme }) => theme.primaryText2};
   font-size: 16px;
   font-weight: 500;
   &:focus {

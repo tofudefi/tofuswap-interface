@@ -45,28 +45,44 @@ export function colors(darkMode: boolean): Colors {
     text2: darkMode ? '#C3C5CB' : '#565A69',
     text3: darkMode ? '#6C7284' : '#888D9B',
     text4: darkMode ? '#565A69' : '#C3C5CB',
-    text5: darkMode ? '#2C2F36' : '#EDEEF2',
+    text5: darkMode ? '#2C2F36' : '#FFFFFF',
+    text6: darkMode ? '#C3C5CB' : '#FFFFFF',
+    text7: darkMode ? '#FFFFFF' : '#979895',
+
+    text31: darkMode ? '#6C7284' : '#565A69',
+    text32: darkMode ? '#C3C5CB' : '#000000',
 
     // backgrounds / greys
-    bg1: darkMode ? '#212429' : '#FFFFFF',
-    bg2: darkMode ? '#2C2F36' : '#F7F8FA',
+    bg1: darkMode ? '#212429' : '#fcf1af',
+    bg2: darkMode ? '#2C2F36' : '#79b544',
     bg3: darkMode ? '#40444F' : '#EDEEF2',
     bg4: darkMode ? '#565A69' : '#CED0D9',
     bg5: darkMode ? '#6C7284' : '#888D9B',
+    bg6: darkMode ? '#6C7284' : '#FFFFFF',
+    bg7: darkMode ? '#2C2F36' : '#cbe1b4',
+    bg8: darkMode ? '#40444F' : '#FFFFFF',
+    bg9: darkMode ? '#565A69' : '#cbe1b4',
+    bg10: darkMode ? '#2C2F36' : '#ff9d46',
+    bg11: darkMode ? '#2C2F36' : '#FFFFFF',
+    bg12: darkMode ? 'none' : '#FFFFFF',
+    bg13: darkMode ? '#40444F' : '#CED0D9',
+    bg14: darkMode ? '#40444F' : '#79b544',
+    bg15: darkMode ? '#2C2F36' : '#79b544',
 
     //specialty colors
     modalBG: darkMode ? 'rgba(0,0,0,.425)' : 'rgba(0,0,0,0.3)',
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#2172E5' : '#ff007a',
+    primary1: darkMode ? '#2172E5' : '#ff9d46',
     primary2: darkMode ? '#3680E7' : '#FF8CC3',
     primary3: darkMode ? '#4D8FEA' : '#FF99C9',
     primary4: darkMode ? '#376bad70' : '#F6DDE8',
-    primary5: darkMode ? '#153d6f70' : '#FDEAF1',
+    primary5: darkMode ? '#153d6f70' : '#ff9d46',
 
     // color text
-    primaryText1: darkMode ? '#6da8ff' : '#ff007a',
+    primaryText1: darkMode ? '#6da8ff' : '#000005',
+    primaryText2: darkMode ? '#6da8ff' : '#ffffff',
 
     // secondary colors
     secondary1: darkMode ? '#2172E5' : '#ff007a',

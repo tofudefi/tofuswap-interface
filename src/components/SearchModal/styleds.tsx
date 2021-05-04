@@ -43,7 +43,7 @@ export const SearchInput = styled.input`
   align-items: center;
   width: 100%;
   white-space: nowrap;
-  background: none;
+  background: ${({ theme }) => theme.bg12};
   border: none;
   outline: none;
   border-radius: 20px;
@@ -66,7 +66,7 @@ export const SearchInput = styled.input`
 export const Separator = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg10};
 `
 
 export const SeparatorDark = styled.div`

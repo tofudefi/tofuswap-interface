@@ -5,7 +5,7 @@ import { RowFixed } from '../Row'
 
 export const FilterWrapper = styled(RowFixed)`
   padding: 8px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg10};
   color: ${({ theme }) => theme.text1};
   border-radius: 8px;
   user-select: none;
