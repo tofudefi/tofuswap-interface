@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import /*styled,*/ { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
-import { TYPE/*, ExternalLink*/ } from '../../theme'
+import { TYPE, ExternalLink } from '../../theme'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
 import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
@@ -65,11 +65,21 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
               Liquidity Provider Fee
             </TYPE.black>
-            <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+            <QuestionHelper text="A portion of each trade (from 0.1% up to 0.30%) goes to liquidity providers as a protocol incentive." />
           </RowFixed>
           <TYPE.black fontSize={14} color={theme.text1}>
             {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
           </TYPE.black>
+        </RowBetween>
+        <RowBetween>
+          <RowFixed>
+          <ExternalLink href={`https://tofudefi.com/freezer.php`} style={{color:theme.blue1}}>
+            <TYPE.black fontSize={12} color={theme.blue1}>
+              Freeze TOFU to get a discount
+            </TYPE.black>
+          </ExternalLink>
+            <QuestionHelper text="If you have TOFU you can trade with lower fees compared to standard 0.3%. Freeze 100 TOFU to get 0.25% trading fee, freeze 1000 TOFU for 0.2%, 10000 TOFU for 0.15% and 100000 TOFU for 0.1%" />
+          </RowFixed>
         </RowBetween>
       </AutoColumn>
     </>

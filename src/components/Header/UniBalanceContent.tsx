@@ -1,7 +1,7 @@
 import { /*ChainId,*/ TokenAmount } from '@tofudefi/tofuswap-sdk'
-import React/*, { useMemo }*/ from 'react'
+import React, { useContext/*, useMemo*/ } from 'react'
 import { X } from 'react-feather'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
 import { TOFU, BIG_INT_ZERO } from '../../constants'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -10,7 +10,7 @@ import { useActiveWeb3React } from '../../hooks'
 //import useCurrentBlockTimestamp from '../../hooks/useCurrentBlockTimestamp'
 //import { useTotalUniEarned } from '../../state/stake/hooks'
 import { useAggregateTofuBalance, useTokenBalance, useTofuFreezedBalance } from '../../state/wallet/hooks'
-import { /*ExternalLink, StyledInternalLink,*/ TYPE, UniTokenAnimated } from '../../theme'
+import { ExternalLink, /*StyledInternalLink,*/ TYPE, UniTokenAnimated } from '../../theme'
 //import { computeUniCirculation } from '../../utils/computeUniCirculation'
 import useUSDCPrice from '../../utils/useUSDCPrice'
 import { AutoColumn } from '../Column'
@@ -44,6 +44,8 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
   const { account, chainId } = useActiveWeb3React()
   const tofu = chainId ? TOFU[chainId] : undefined
   const zero = BIG_INT_ZERO
+
+  const theme = useContext(ThemeContext)
 
   const zeroAmount = tofu ? new TokenAmount(tofu, zero) : undefined;
 
@@ -102,6 +104,9 @@ export default function UniBalanceContent({ setShowUniBalanceModal }: { setShowU
                 <RowBetween>
                   <TYPE.white color="white">Freezed:</TYPE.white>
                   <TYPE.white color="white">{freezedBalance?.toFixed(2, { groupSeparator: ',' })}</TYPE.white>
+                </RowBetween>
+                <RowBetween style={{ justifyContent: 'flex-end' }}>
+                  <ExternalLink href={`https://tofudefi.com/freezer.php`} style={{color:theme.blue1}}>Freeze TOFU</ExternalLink>
                 </RowBetween>
                 {/*
                 <RowBetween>

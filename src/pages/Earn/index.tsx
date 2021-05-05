@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 //import { STAKING_REWARDS_INFO, useStakingInfo } from '../../state/stake/hooks'
 import { TYPE, ExternalLink } from '../../theme'
 //import PoolCard from '../../components/earn/PoolCard'
@@ -54,6 +54,8 @@ export default function Earn() {
   // toggle copy if rewards are inactive
   //const stakingRewardsExist = Boolean(typeof chainId === 'number' && (STAKING_REWARDS_INFO[chainId]?.length ?? 0) > 0)
 
+  const theme = useContext(ThemeContext)
+
   return (
     <PageWrapper gap="lg" justify="center">
       <TopSection gap="md">
@@ -70,6 +72,7 @@ export default function Earn() {
                   Deposit your Liquidity Provider tokens to receive TOFU, the TofuDefi protocol governance token.
                 </TYPE.white>
               </RowBetween>{' '}
+              <RowBetween>
               <ExternalLink
                 style={{ color: 'black', textDecoration: 'underline' }}
                 href="https://medium.com/tofudefi"
@@ -77,6 +80,10 @@ export default function Earn() {
               >
                 <TYPE.white fontSize={14} color="black">Read more about TOFU</TYPE.white>
               </ExternalLink>
+              <ExternalLink href={`https://tofudefi.com/freezer.php`} style={{color:theme.blue1, textDecoration: 'underline'}}>
+                <TYPE.black fontSize={14} style={{color:theme.blue1}}>Freeze TOFU</TYPE.black>
+              </ExternalLink>
+              </RowBetween>
             </AutoColumn>
           </CardSection>
           {/*<CardBGImage />*/}
