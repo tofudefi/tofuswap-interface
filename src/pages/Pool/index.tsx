@@ -7,7 +7,7 @@ import { SwapPoolTabs } from '../../components/NavigationTabs'
 import FullPositionCard from '../../components/PositionCard'
 import { useUserHasLiquidityInAllTokens } from '../../data/V1'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { StyledInternalLink, ExternalLink, TYPE, HideSmall } from '../../theme'
+import { StyledInternalLink/*, ExternalLink*/, TYPE, HideSmall } from '../../theme'
 import { Text } from 'rebass'
 import Card from '../../components/Card'
 import { RowBetween, RowFixed } from '../../components/Row'
@@ -145,13 +145,13 @@ export default function Pool() {
                   {`Liquidity providers earn a up to 0.3% fee on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.`}
                 </TYPE.white>
               </RowBetween>
-              <ExternalLink
+              {/*<ExternalLink
                 style={{ color: 'white', textDecoration: 'underline' }}
                 target="_blank"
                 href="https://uniswap.org/docs/v2/core-concepts/pools/"
               >
                 <TYPE.white fontSize={14}>Read more about providing liquidity</TYPE.white>
-              </ExternalLink>
+              </ExternalLink>*/}
             </AutoColumn>
           </CardSection>
           {/*<CardBGImage />*/}
