@@ -12,6 +12,10 @@ import { ethAddress } from '@tofudefi/java-tron-provider'
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
   try {
+    // check for tron base58 encoded address
+    if (typeof value === "string" && value.charAt(0) === "T") {
+       value = ethAddress.fromTron(value)
+    }
     return getAddress(value)
   } catch {
     return false
