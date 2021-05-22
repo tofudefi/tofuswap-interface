@@ -15,7 +15,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
-import { isTokenOnList } from '../../utils'
+import { isTokenOnList, shortenAddress } from '../../utils'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === TRX ? 'TRX' : ''
@@ -95,6 +95,7 @@ function CurrencyRow({
 }) {
   const { account, chainId } = useActiveWeb3React()
   const key = currencyKey(currency)
+  const shortCurrAddress = currency instanceof Token ? '(' + shortenAddress(currency.address) + ')' : ''
   const selectedTokenList = useSelectedTokenList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
@@ -117,6 +118,9 @@ function CurrencyRow({
         <Text title={currency.name} fontWeight={500}>
           {currency.symbol}
         </Text>
+        <TYPE.darkGray ml="0px" fontSize={'12px'} fontWeight={300}>
+          {currency.name} { shortCurrAddress }
+        </TYPE.darkGray>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
             <TYPE.main fontWeight={500}>
