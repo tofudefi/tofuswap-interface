@@ -313,7 +313,7 @@ export default function Header() {
             {t('pool')}
           </StyledNavLink>
           <StyledNavLink id={`stake-nav-link`} to={'/tofu'}>
-            TOFU
+            Earn TOFU
           </StyledNavLink>
           {/* comment vote
           <StyledNavLink id={`stake-nav-link`} to={'/vote'}>
