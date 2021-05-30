@@ -17,6 +17,12 @@ const getTokenLogoURL = (address: string) => {
   if (POPULAR_TOKENS_WO_LOGO_BY_ADDR.indexOf(tronAddress) >= 0) {
       return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/assets/${tronAddress}/logo.png`
   } 
+
+  // Dice
+  if (tronAddress === 'TKttnV3FSY1iEoAwB4N52WK2DxdV94KpSd') {
+      return 'https://coin.top/production/logo/TKttnV3FSY1iEoAwB4N52WK2DxdV94KpSd.jpg';
+  }
+
   return `https://coin.top/production/upload/logo/${tronAddress}.png`
 }
 
