@@ -3,7 +3,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 
 import { injected } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xba7b1245cd804aa0844037dcf9c53ec693033dd0'
+export const ROUTER_ADDRESS = '0xBa7b1245cd804aA0844037DcF9c53Ec693033dd0'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -13,8 +13,9 @@ type ChainTokenList = {
 }
 
 export const USDT = new Token(ChainId.MAINNET, '0xa614f803B6FD780986A42c78Ec9c7f77e6DeD13C', 6, 'USDT', 'Tether USD')
-export const USDJ = new Token(ChainId.MAINNET, '0x834295921a488d9d42b4b3021ed1a3c39fb0f03e', 6, 'USDJ', 'JUST Stablecoin')
-export const BTC = new Token(ChainId.MAINNET, '0x84716914c0fdf7110a44030d04d0c4923504d9cc', 8, 'BTC', 'Tron BTC')
+export const USDJ = new Token(ChainId.MAINNET, '0x834295921A488D9d42b4b3021ED1a3C39fB0f03e', 6, 'USDJ', 'JUST Stablecoin')
+export const BTC = new Token(ChainId.MAINNET, '0x84716914C0fDf7110A44030d04D0C4923504D9CC', 8, 'BTC', 'Tron BTC')
+export const DICE = new Token(ChainId.MAINNET, '0x6cE0632A762689a207b9CCE915e93Aa9596816CA', 6, 'DICE', 'TRONBet Dice')
 
 // USDT, USDJ, WINK, SUN, JST
 export const POPULAR_TOKENS_WO_LOGO_BY_ADDR = ['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
@@ -90,7 +91,7 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
   ...WETH_ONLY,
-  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], USDT, USDJ]
+  [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], USDT, USDJ, TOFU[ChainId.MAINNET]]
   // @TRON
   // [ChainId.MAINNET]: [...WETH_ONLY[ChainId.MAINNET], DAI, USDC, USDT]
 }
