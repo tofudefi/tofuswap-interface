@@ -1,15 +1,15 @@
 import { ChainId, CurrencyAmount, JSBI, Token, TokenAmount, WTRX, Pair } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
-import { UNI, USDJ, USDT, BTC } from '../../constants'
+import { TOFU, DICE, USDT } from '../../constants'
 import { STAKING_REWARDS_INTERFACE } from '../../constants/abis/staking-rewards'
 import { useActiveWeb3React } from '../../hooks'
 import { NEVER_RELOAD, useMultipleContractSingleData } from '../multicall/hooks'
 import { tryParseAmount } from '../swap/hooks'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 
-export const STAKING_GENESIS = 1600387200
+export const STAKING_GENESIS = 1621957000
 
-export const REWARDS_DURATION_DAYS = 60
+export const REWARDS_DURATION_DAYS = 30
 
 // TODO add staking rewards addresses here
 export const STAKING_REWARDS_INFO: {
@@ -20,16 +20,16 @@ export const STAKING_REWARDS_INFO: {
 } = {
   [ChainId.MAINNET]: [
     {
-      tokens: [WTRX[ChainId.MAINNET], USDJ],
-      stakingRewardAddress: '0x7FBa4B8Dc5E7616e59622806932DBea72537A56b'
+      tokens: [TOFU[ChainId.MAINNET], USDT],
+      stakingRewardAddress: '0x0674243F83828268dB580c760673E735353c0B1b'
     },
     {
       tokens: [WTRX[ChainId.MAINNET], USDT],
-      stakingRewardAddress: '0x6C3e4cb2E96B01F4b866965A91ed4437839A121a'
+      stakingRewardAddress: '0x7a8ea196460B0fBcF8982d1B718CEf23800562f9'
     },
     {
-      tokens: [WTRX[ChainId.MAINNET], BTC],
-      stakingRewardAddress: '0xCA35e32e7926b96A9988f61d510E038108d8068e'
+      tokens: [DICE, USDT],
+      stakingRewardAddress: '0x98aD3a3C60129eCaEa78af78ffc0c789c5971B2d'
     }
   ]
 }
@@ -84,7 +84,7 @@ export function useStakingInfo(pairToFilterBy?: Pair | null): StakingInfo[] {
     [chainId, pairToFilterBy]
   )
 
-  const uni = chainId ? UNI[chainId] : undefined
+  const uni = chainId ? TOFU[chainId] : undefined
 
   const rewardsAddresses = useMemo(() => info.map(({ stakingRewardAddress }) => stakingRewardAddress), [info])
 
@@ -210,7 +210,7 @@ export function useStakingInfo(pairToFilterBy?: Pair | null): StakingInfo[] {
 
 export function useTotalUniEarned(): TokenAmount | undefined {
   const { chainId } = useActiveWeb3React()
-  const uni = chainId ? UNI[chainId] : undefined
+  const uni = chainId ? TOFU[chainId] : undefined
   const stakingInfos = useStakingInfo()
 
   return useMemo(() => {
