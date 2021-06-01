@@ -203,7 +203,7 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
               {!currency0 || !currency1 ? <Dots>Loading</Dots> : `${currency0.symbol}/${currency1.symbol}`}
             </Text>
             {!!stakedBalance && (
-              <ButtonUNIGradient as={Link} to={`/uni/${currencyId(currency0)}/${currencyId(currency1)}`}>
+              <ButtonUNIGradient as={Link} to={`/tofu/${currencyId(currency0)}/${currencyId(currency1)}`}>
                 <HideExtraSmall>Earning TOFU</HideExtraSmall>
                 <ExtraSmallOnly>
                   <span role="img" aria-label="bolt">
@@ -338,7 +338,7 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
                 padding="8px"
                 borderRadius="8px"
                 as={Link}
-                to={`/uni/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/tofu/${currencyId(currency0)}/${currencyId(currency1)}`}
                 width="100%"
               >
                 Manage Liquidity in Rewards Pool
