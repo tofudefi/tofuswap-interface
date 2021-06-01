@@ -164,8 +164,9 @@ export const ButtonUNIGradient = styled(ButtonPrimary)`
   padding: 4px 8px;
   height: 36px;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.bg3};
-  background: radial-gradient(174.47% 188.91% at 1.84% 0%, #ff007a 0%, #2172e5 100%), #edeef2;
+  background-image: -moz-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
+  background-image: -webkit-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
+  background-image: -ms-linear-gradient( 107deg, rgb(200,25,136) 0%, rgb(255,149,64) 100%);
   width: fit-content;
   position: relative;
   cursor: pointer;
