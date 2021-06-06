@@ -84,7 +84,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
     setAttempting(true)
     if (stakingContract && parsedAmount && deadline) {
       if (approval === ApprovalState.APPROVED) {
-        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 50000000 })
+        await stakingContract.stake(`0x${parsedAmount.raw.toString(16)}`, { gasLimit: 26000000 })
           .then((response: TransactionResponse) => {
             addTransaction(response, {
               summary: `Deposit liquidity`
@@ -103,7 +103,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             signatureData.v,
             signatureData.r,
             signatureData.s,
-            { gasLimit: 50000000 }
+            { gasLimit: 26000000 }
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
