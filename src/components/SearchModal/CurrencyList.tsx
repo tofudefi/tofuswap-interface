@@ -16,6 +16,9 @@ import { MouseoverTooltip } from '../Tooltip'
 import { FadedSpan, MenuItem } from './styleds'
 import Loader from '../Loader'
 import { isTokenOnList, shortenAddress } from '../../utils'
+import { ExternalLink } from '../../theme/components'
+import { getEtherscanLink } from '../../utils'
+
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === TRX ? 'TRX' : ''
@@ -95,7 +98,8 @@ function CurrencyRow({
 }) {
   const { account, chainId } = useActiveWeb3React()
   const key = currencyKey(currency)
-  const shortCurrAddress = currency instanceof Token ? '(' + shortenAddress(currency.address) + ')' : ''
+  const shortCurrAddress = currency instanceof Token ? shortenAddress(currency.address) : ''
+  const tronScanLink = (currency instanceof Token && chainId) ? getEtherscanLink(chainId, currency.address, 'token') : ''
   const selectedTokenList = useSelectedTokenList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
@@ -119,7 +123,12 @@ function CurrencyRow({
           {currency.symbol}
         </Text>
         <TYPE.darkGray ml="0px" fontSize={'12px'} fontWeight={300}>
-          {currency.name} { shortCurrAddress }
+          {currency.name}
+          {chainId && shortCurrAddress && (' (')}
+          {chainId && shortCurrAddress && (
+             <ExternalLink href={tronScanLink}>{ shortCurrAddress }</ExternalLink>
+          )}
+          {chainId && shortCurrAddress && (')')}
         </TYPE.darkGray>
         <FadedSpan>
           {!isOnSelectedList && customAdded ? (
