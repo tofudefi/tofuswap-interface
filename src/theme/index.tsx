@@ -178,7 +178,7 @@ export const TYPE = {
     return <TextWrapper fontWeight={500} color={'yellow1'} {...props} />
   },
   darkGray(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text3'} {...props} />
+    return <TextWrapper fontWeight={500} color={'text31'} {...props} />
   },
   gray(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'bg3'} {...props} />
