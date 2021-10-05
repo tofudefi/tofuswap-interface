@@ -2,7 +2,7 @@
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@tofudefi/tofuswap-sdk'
 import { useMemo } from 'react'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
+import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE, SAFEMONEY } from '../constants'
 import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { /*calculateGasMargin,*/ getRouterContract, isAddress, shortenAddress } from '../utils'
@@ -73,19 +73,19 @@ function useSwapCallArguments(
 
     switch (tradeVersion) {
       case Version.v2:
-        swapMethods.push(
-          Router.swapCallParameters(trade, {
-            feeOnTransfer: false,
-            allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-            recipient,
-            deadline: deadline.toNumber()
-          })
-        )
-
-        if (trade.tradeType === TradeType.EXACT_INPUT) {
+        if (trade.tradeType === TradeType.EXACT_INPUT && SAFEMONEY.equals(trade.route.path[0])) {
           swapMethods.push(
             Router.swapCallParameters(trade, {
               feeOnTransfer: true,
+              allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
+              recipient,
+              deadline: deadline.toNumber()
+            })
+          )
+        } else {
+          swapMethods.push(
+            Router.swapCallParameters(trade, {
+              feeOnTransfer: false,
               allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
               recipient,
               deadline: deadline.toNumber()
