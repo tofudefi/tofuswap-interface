@@ -16,6 +16,7 @@ export const USDT = new Token(ChainId.MAINNET, '0xa614f803B6FD780986A42c78Ec9c7f
 export const USDJ = new Token(ChainId.MAINNET, '0x834295921A488D9d42b4b3021ED1a3C39fB0f03e', 6, 'USDJ', 'JUST Stablecoin')
 export const BTC = new Token(ChainId.MAINNET, '0x84716914C0fDf7110A44030d04D0C4923504D9CC', 8, 'BTC', 'Tron BTC')
 export const DICE = new Token(ChainId.MAINNET, '0x6cE0632A762689a207b9CCE915e93Aa9596816CA', 6, 'DICE', 'TRONBet Dice')
+export const SAFEMONEY = new Token(ChainId.MAINNET, '0x8605cae8c40545d2184d59550918185f44d9ea0d', 8, 'SafeMoney', 'Safe Money')
 
 // USDT, USDJ, WINK, SUN, JST
 export const POPULAR_TOKENS_WO_LOGO_BY_ADDR = ['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
