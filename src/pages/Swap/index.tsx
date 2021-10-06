@@ -20,7 +20,7 @@ import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 
-import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { BETTER_TRADE_LINK_THRESHOLD, INITIAL_ALLOWED_SLIPPAGE, SAFEMONEY } from '../../constants'
 import { getTradeVersion, isTradeBetter } from '../../data/V1'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -76,7 +76,7 @@ export default function Swap() {
   const [isExpertMode] = useExpertModeManager()
 
   // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
+  let [allowedSlippage] = useUserSlippageTolerance()
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
@@ -267,6 +267,25 @@ export default function Swap() {
     onCurrencySelection
   ])
 
+  let inputIsSafeMoney = false
+  let outputIsSafeMoney = false
+
+  if (currencies[Field.INPUT] instanceof Token ) {
+    let inputToken = currencies[Field.INPUT] as Token
+    if (SAFEMONEY.equals(inputToken)){
+      inputIsSafeMoney = true
+      allowedSlippage = allowedSlippage + 1100
+    }
+  }
+
+  if (currencies[Field.OUTPUT] instanceof Token ) {
+    let inputToken = currencies[Field.OUTPUT] as Token
+    if (SAFEMONEY.equals(inputToken)){
+      outputIsSafeMoney = true
+    }
+  }
+
+
   return (
     <>
       <TokenWarningModal
@@ -360,6 +379,20 @@ export default function Swap() {
                         showInverted={showInverted}
                         setShowInverted={setShowInverted}
                       />
+                    </RowBetween>
+                  )}
+                  { (inputIsSafeMoney || outputIsSafeMoney) && (
+                    <RowBetween align="center">
+                      <Text fontWeight={500} fontSize={14} color={theme.red1}>
+                        SafeMoney charges 10% fee for any transfer!
+                      </Text>
+                    </RowBetween>
+                  )}
+                  { inputIsSafeMoney && (
+                    <RowBetween align="center">
+                      <Text fontWeight={500} fontSize={14} color={theme.red2}>
+                        Slippage Tolerance increased to {allowedSlippage / 100}% for this trade!
+                      </Text>
                     </RowBetween>
                   )}
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
