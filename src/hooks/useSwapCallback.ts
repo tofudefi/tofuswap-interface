@@ -74,6 +74,7 @@ function useSwapCallArguments(
     switch (tradeVersion) {
       case Version.v2:
         if (trade.tradeType === TradeType.EXACT_INPUT && SAFEMONEY.equals(trade.route.path[0])) {
+          allowedSlippage = allowedSlippage + 1100
           swapMethods.push(
             Router.swapCallParameters(trade, {
               feeOnTransfer: true,

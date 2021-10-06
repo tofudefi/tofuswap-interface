@@ -1,4 +1,4 @@
-import { Currency, Pair } from '@tofudefi/tofuswap-sdk'
+import { Currency, Pair, Token } from '@tofudefi/tofuswap-sdk'
 import React, { useState, useContext, useCallback } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { darken } from 'polished'
@@ -13,6 +13,7 @@ import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
+import { SAFEMONEY } from '../../constants'
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -160,9 +161,15 @@ export default function CurrencyInputPanel({
     setModalOpen(false)
   }, [setModalOpen])
 
+  let inputDisabled = false
+
+  if (id === "swap-currency-output" && otherCurrency instanceof Token && SAFEMONEY.equals(otherCurrency)) {
+    inputDisabled = true
+  }
+
   return (
     <InputPanel id={id}>
-      <Container hideInput={hideInput}>
+      <Container hideInput={hideInput} style={inputDisabled ? { backgroundColor: theme.bg3 } : {}}>
         {!hideInput && (
           <LabelRow>
             <RowBetween>
@@ -185,10 +192,12 @@ export default function CurrencyInputPanel({
             </RowBetween>
           </LabelRow>
         )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect} >
           {!hideInput && (
             <>
               <NumericalInput
+                style={inputDisabled ? { backgroundColor: theme.bg3 } : {}}
+                disabled={inputDisabled}
                 className="token-amount-input"
                 value={value}
                 onUserInput={val => {
