@@ -189,7 +189,7 @@ export default function AddLiquidity({
       .then(estimatedGasLimit =>
         method(...args, {
           ...(value ? { value } : {}),
-          gasLimit: 40000000 //DEFAULT_FEE_LIMIT
+          gasLimit: 80000000 //DEFAULT_FEE_LIMIT
         }).then(response => {
           setAttemptingTxn(false)
 

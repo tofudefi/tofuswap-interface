@@ -103,7 +103,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             signatureData.v,
             signatureData.r,
             signatureData.s,
-            { gasLimit: 26000000 }
+            { gasLimit: 52000000 }
           )
           .then((response: TransactionResponse) => {
             addTransaction(response, {
