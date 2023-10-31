@@ -14,9 +14,18 @@ type ChainTokenList = {
 
 export const USDT = new Token(ChainId.MAINNET, '0xa614f803B6FD780986A42c78Ec9c7f77e6DeD13C', 6, 'USDT', 'Tether USD')
 export const USDJ = new Token(ChainId.MAINNET, '0x834295921A488D9d42b4b3021ED1a3C39fB0f03e', 6, 'USDJ', 'JUST Stablecoin')
+export const USDD = new Token(ChainId.MAINNET, '0x94F24E992cA04B49C6f2a2753076Ef8938eD4daa', 18, 'USDD', 'Decentralized USD')
+export const TUSD = new Token(ChainId.MAINNET, '0xcEbDE71077b830B958C8da17bcddeeB85D0BCf25', 18, 'TUSD', 'TrueUSD')
+export const USDC = new Token(ChainId.MAINNET, '0x3487b63D30B5B2C87fb7fFa8bcfADE38EAaC1abe', 6, 'USDC', 'USD Coin')
 export const BTC = new Token(ChainId.MAINNET, '0x84716914C0fDf7110A44030d04D0C4923504D9CC', 8, 'BTC', 'Tron BTC')
 export const DICE = new Token(ChainId.MAINNET, '0x6cE0632A762689a207b9CCE915e93Aa9596816CA', 6, 'DICE', 'TRONBet Dice')
+export const LIVE = new Token(ChainId.MAINNET, '0xD829659F0F7661f29F12F07a5Be33C13b6c9dD59', 6, 'LIVE', 'TRONbetLive')
 export const SAFEMONEY = new Token(ChainId.MAINNET, '0x8605cae8c40545d2184d59550918185f44d9ea0d', 8, 'SafeMoney', 'Safe Money')
+export const SUN = new Token(ChainId.MAINNET, '0xb4A428ab7092c2f1395f376cE297033B3bB446C1', 18, 'SUN', 'SUN')
+export const NFT = new Token(ChainId.MAINNET, '0x3Dfe637B2b9aE4190A458B5F3EfC1969afE27819', 6, 'NFT', 'APENFT')
+export const BTT = new Token(ChainId.MAINNET, '0x032017411f4663B317fE77C257d28D5cD1b26e3D', 18, 'BTT', 'BitTorrent')
+
+export const SUNSWAP_PAIR_ADDRESS = '0x04596b0dcE9FFd1Fa1AA08Ba1D55cd169f400ed9'
 
 // USDT, USDJ, WINK, SUN, JST
 export const POPULAR_TOKENS_WO_LOGO_BY_ADDR = ['TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
