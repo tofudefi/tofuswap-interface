@@ -41,7 +41,7 @@ import { PoolPriceBar } from './PoolPriceBar'
 import { useTofuFreezedBalance } from '../../state/wallet/hooks'
 import JSBI from 'jsbi'
 
-import { DEFAULT_FEE_LIMIT } from '../../tron-config'
+//import { DEFAULT_FEE_LIMIT } from '../../tron-config'
 
 export default function AddLiquidity({
   match: {
@@ -189,7 +189,7 @@ export default function AddLiquidity({
       .then(estimatedGasLimit =>
         method(...args, {
           ...(value ? { value } : {}),
-          gasLimit: DEFAULT_FEE_LIMIT
+          gasLimit: 1500000000 //DEFAULT_FEE_LIMIT
         }).then(response => {
           setAttemptingTxn(false)
 
