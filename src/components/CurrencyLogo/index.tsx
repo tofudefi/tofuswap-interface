@@ -20,10 +20,16 @@ const getTokenLogoURL = (address: string) => {
 
   // Dice
   if (tronAddress === 'TKttnV3FSY1iEoAwB4N52WK2DxdV94KpSd') {
-      return 'https://coin.top/production/logo/TKttnV3FSY1iEoAwB4N52WK2DxdV94KpSd.jpg';
+      return 'https://static.tronscan.org/production/logo/TKttnV3FSY1iEoAwB4N52WK2DxdV94KpSd.jpg';
   }
 
-  return `https://coin.top/production/upload/logo/${tronAddress}.png`
+  // Btt
+  if (tronAddress === 'TAFjULxiVgT4qWk6UZwjqwZXTSaGaqnVp4') {
+      return 'https://static.tronscan.org/production/logo/1002000.png';
+  }
+
+
+  return `https://static.tronscan.org/production/upload/logo/${tronAddress}.png`
 }
 
 const StyledEthereumLogo = styled.img<{ size: string }>`
