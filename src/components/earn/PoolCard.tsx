@@ -14,7 +14,7 @@ import { unwrappedToken } from '../../utils/wrappedCurrency'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { usePair } from '../../data/Reserves'
 import useUSDCPrice from '../../utils/useUSDCPrice'
-import { BIG_INT_SECONDS_IN_WEEK } from '../../constants'
+import { BIG_INT_SECONDS_IN_WEEK, SUNSWAP_PAIR_ADDRESS } from '../../constants'
 
 const StatContainer = styled.div`
   display: flex;
@@ -84,6 +84,17 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
 
   const totalSupplyOfStakingToken = useTotalSupply(stakingInfo.stakedAmount.token)
   const [, stakingTokenPair] = usePair(...stakingInfo.tokens)
+  
+  const isSunSwapStaking = stakingInfo.stakingRewardAddress === SUNSWAP_PAIR_ADDRESS;
+  
+  let pair_symbol = currency0.symbol + "-" + currency1.symbol;
+  let manage_link_suff = currencyId(currency0) +'/' + currencyId(currency1);
+  let manage_link = '/tofu/' + manage_link_suff;
+  
+  if (isSunSwapStaking) {
+    pair_symbol = "SUNSWAP-"+pair_symbol;
+    manage_link = '/tofu/sunswap/' + manage_link_suff;
+  }
 
   // let returnOverMonth: Percent = new Percent('0')
   let valueOfTotalStakedAmountInWETH: TokenAmount | undefined
@@ -114,10 +125,10 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
       <TopSection>
         <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
         <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
-          {currency0.symbol}-{currency1.symbol}
+          {pair_symbol}
         </TYPE.white>
 
-        <StyledInternalLink to={`/tofu/${currencyId(currency0)}/${currencyId(currency1)}`} style={{ width: '100%' }}>
+        <StyledInternalLink to={manage_link} style={{ width: '100%' }}>
           <ButtonPrimary padding="8px" borderRadius="8px">
             {isStaking ? 'Manage' : 'Deposit'}
           </ButtonPrimary>

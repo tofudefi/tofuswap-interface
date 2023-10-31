@@ -16,6 +16,7 @@ import {
 } from './AddLiquidity/redirects'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
+import SunManage from './Earn/SunManage'
 import MigrateV1 from './MigrateV1'
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
 import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
@@ -100,6 +101,7 @@ export default function App() {
               <Route exact strict path="/migrate/v1" component={MigrateV1} />
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/tofu/:currencyIdA/:currencyIdB" component={Manage} />
+              <Route exact strict path="/tofu/sunswap/:currencyIdA/:currencyIdB" component={SunManage} />
               <Route exact strict path="/vote/:id" component={VotePage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
