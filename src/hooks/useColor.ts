@@ -13,7 +13,7 @@ async function getColorFromToken(token: Token): Promise<string | null> {
 
   const tokenTronAddress = ethAddress.toTron(token.address)
 
-  let path = `https://coin.top/production/upload/logo/${tokenTronAddress}.png`
+  let path = `https://static.tronscan.org/production/upload/logo/${tokenTronAddress}.png`
 
   if (POPULAR_TOKENS_WO_LOGO_BY_ADDR.indexOf(tokenTronAddress) >= 0) {
       path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/tron/assets/${tokenTronAddress}/logo.png`
